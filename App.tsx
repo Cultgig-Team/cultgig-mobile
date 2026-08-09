@@ -1,8 +1,14 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RootNavigator } from './src/navigation/RootNavigator';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RootNavigator } from "./src/navigation/RootNavigator";
+
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import "./global.css";
+import { SafeAreaListener } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Uniwind } from "uniwind";
 
 /**
  * APP ROOT
@@ -23,11 +29,21 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <RootNavigator />
-        <StatusBar style="auto" />
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    <SafeAreaListener
+      onChange={({ insets }) => {
+        Uniwind.updateInsets(insets);
+      }}
+    >
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <GluestackUIProvider mode="dark">
+          <SafeAreaProvider>
+            <QueryClientProvider client={queryClient}>
+              <RootNavigator />
+              <StatusBar style="auto" />
+            </QueryClientProvider>
+          </SafeAreaProvider>
+        </GluestackUIProvider>
+      </GestureHandlerRootView>
+    </SafeAreaListener>
   );
 }
