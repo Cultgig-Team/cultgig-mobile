@@ -19,6 +19,8 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   loading = false,
   disabled = false,
+  style, // pulled out so it merges into the array below instead of
+         // overwriting it when spread via ...pressableProps
   ...pressableProps
 }) => {
   const textColorStyle = {
@@ -35,6 +37,7 @@ export const Button: React.FC<ButtonProps> = ({
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled }}
       disabled={isDisabled}
+      {...pressableProps}
       style={({ pressed }) => [
         buttonStyles.base,
         buttonStyles[variant],
@@ -43,9 +46,11 @@ export const Button: React.FC<ButtonProps> = ({
         variant === 'primary' && isDisabled && buttonStyles.primaryDisabled,
         variant !== 'primary' && isDisabled && buttonStyles.disabled,
         pressed && !isDisabled && styles.pressed,
+        // caller-provided style (e.g. LoginScreen's marginTop) is
+        // appended last so it ADDS to the computed style, never replaces it
+        typeof style === 'function' ? style({ pressed }) : style,
       ]}
-      {...pressableProps}
-    >
+      >
       {loading ? (
         <ActivityIndicator
           color={variant === 'primary' ? theme.colors.textInverse : theme.colors.primary}
