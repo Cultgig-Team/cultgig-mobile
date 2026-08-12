@@ -17,6 +17,7 @@ export interface OnboardingAnswers {
   city?: string;
   travelPreference?: 'withinCity' | 'openToTravel';
   skillBio?: string;
+  primarySkill?: string; // "Artist 112" — Photographer, Dancer, Guitarist, etc.
   experienceLevel?: 'fresher' | 'intermediate' | 'experienced';
   gigTypes?: string[];
   portfolioUris?: string[];

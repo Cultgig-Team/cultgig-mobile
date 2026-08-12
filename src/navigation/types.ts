@@ -10,6 +10,16 @@ export type RootStackParamList = {
   RoleConfirmation: undefined;
   SignUp: undefined;
   OTPVerification: { email: string };
+  // Artist onboarding branch (Figma nodes 109 -> 117)
+  BasicBio: undefined;
+  Location: undefined;
+  SkillBio: undefined;
+  CategorySelect: undefined;
+  PortfolioUpload: undefined;
+  SocialLinks: undefined;
+  Budget: undefined;
+  Experience: undefined;
+  Interests: undefined;
   MainTabs: undefined;
   ArtworkDetail: { artworkId: string };
   Login: undefined;
