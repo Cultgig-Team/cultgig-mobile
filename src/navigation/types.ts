@@ -22,6 +22,8 @@ export type RootStackParamList = {
   Interests: undefined;
   MainTabs: undefined;
   ArtworkDetail: { artworkId: string };
+  EventDetail: { eventId: number };
+  ApplyonEvent: undefined;
   Login: undefined;
 };
 

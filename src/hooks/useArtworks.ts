@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { artworkService } from '../services/artworkService';
+import { useQuery } from "@tanstack/react-query";
+import { artworkService } from "../services/artworkService";
 
 /**
  * HOOK: useArtworkFeed
@@ -11,15 +11,30 @@ import { artworkService } from '../services/artworkService';
  */
 export const useArtworkFeed = () => {
   return useQuery({
-    queryKey: ['artworks', 'feed'],
+    queryKey: ["artworks", "feed"],
     queryFn: artworkService.getFeed,
   });
 };
 
 export const useArtworkDetail = (id: string) => {
   return useQuery({
-    queryKey: ['artworks', id],
+    queryKey: ["artworks", id],
     queryFn: () => artworkService.getById(id),
+    enabled: Boolean(id),
+  });
+};
+
+export const usePopularEvents = () => {
+  return useQuery({
+    queryKey: ["events", "popular"],
+    queryFn: artworkService.getPopularEvents,
+  });
+};
+
+export const usePopularEventDetail = (id: number) => {
+  return useQuery({
+    queryKey: ["events", "popular", id],
+    queryFn: () => artworkService.getPopularEventById(id),
     enabled: Boolean(id),
   });
 };

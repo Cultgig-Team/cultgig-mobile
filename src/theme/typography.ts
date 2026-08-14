@@ -103,6 +103,12 @@ export const typography = {
     lineHeight: lineHeight.xl,
     fontWeight: fontWeight.bold,
   },
+  h3: {
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.lg,
+    lineHeight: lineHeight.lg,
+    fontWeight: fontWeight.bold,
+  },
   /** Figma "Title/Title 4" — Satoshi Bold 18 (confirmed, e.g. "I'm a Artist") */
   titleLg: {
     fontFamily: fontFamily.bold,

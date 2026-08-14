@@ -1,10 +1,17 @@
-import React from 'react';
-import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text } from '../../components/atoms/Text';
-import { useArtworkFeed } from '../../hooks/useArtworks';
-import { theme } from '../../theme';
-
+import React from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "../../components/atoms/Text";
+import { useArtworkFeed, usePopularEvents } from "../../hooks/useArtworks";
+import { theme } from "../../theme";
+import EventCard from "@/components/templates/EventCard/EventCard";
 /**
  * SCREEN: Home
  * -------------------------------------------------------
@@ -14,26 +21,58 @@ import { theme } from '../../theme';
  * the real feed (ArtworkGrid organism, Header organism, etc).
  */
 export const HomeScreen = () => {
-  const { data: artworks, isLoading, error } = useArtworkFeed();
+  const {
+    data: artworks,
+    isLoading: artworksLoading,
+    error: artworksError,
+  } = useArtworkFeed();
 
+  const {
+    data: popularEvents,
+    isLoading: eventsLoading,
+    error: eventsError,
+  } = usePopularEvents();
+  // console.log(popularEvents);
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.header}>
         <Text variant="h1">Discover</Text>
         <Text variant="body" color="textSecondary">
           Fresh work from artists you follow
         </Text>
+        <Text variant="h2">Popular Events near you</Text>
+        {eventsLoading && (
+          <ActivityIndicator
+            style={styles.loader}
+            color={theme.colors.primary}
+          />
+        )}
+
+        {eventsError && (
+          <Text variant="body" color="error" style={styles.padded}>
+            Couldn't load popular events.
+          </Text>
+        )}
+        {!eventsLoading && !eventsError && (
+          <FlatList
+            data={popularEvents ?? []}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <EventCard event={item} />}
+          />
+        )}
       </View>
 
-      {isLoading && <ActivityIndicator style={styles.loader} color={theme.colors.primary} />}
+      {/* {artworksLoading && (
+        <ActivityIndicator style={styles.loader} color={theme.colors.primary} />
+      )}
 
-      {error && (
+      {artworksError && (
         <Text variant="body" color="error" style={styles.padded}>
           Couldn't load the feed. Pull to refresh once your API is connected.
         </Text>
       )}
 
-      {!isLoading && !error && (
+      {!artworksLoading && !artworksError && (
         <FlatList
           data={artworks ?? []}
           keyExtractor={(item) => item.id}
@@ -49,7 +88,7 @@ export const HomeScreen = () => {
             </Text>
           )}
         />
-      )}
+      )} */}
     </SafeAreaView>
   );
 };
@@ -71,5 +110,22 @@ const styles = StyleSheet.create({
   },
   padded: {
     paddingVertical: theme.spacing.md,
+  },
+  card: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#D9D9D9",
+    borderRadius: 16,
+    padding: 16,
+  },
+  cardHeaderAndFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  locationAndTime: {
+    flexDirection: "row",
+    gap: 13.75,
+    padding: 4,
   },
 });
