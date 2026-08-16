@@ -1,6 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Image, ScrollView } from "react-native";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { View, StyleSheet, Image, ScrollView, Pressable } from "react-native";
+import {
+  RouteProp,
+  useNavigation,
+  useRoute,
+  NavigationProp,
+} from "@react-navigation/native";
 import {
   MapPin,
   Clock3,
@@ -26,25 +31,6 @@ interface EventDetailScreenProps {
   onApply?: () => void;
 }
 
-// interface InfoItemProps {
-//   icon: React.ReactNode;
-//   label: string;
-//   trailing?: React.ReactNode;
-// }
-
-// const InfoItem: React.FC<InfoItemProps> = ({ icon, label, trailing }) => (
-//   <View style={styles.infoItemContainer}>
-//     <View style={styles.infoItemContent}>
-//       <View style={styles.iconPill}>{icon}</View>
-//       <View>
-//         <Text variant="titleLg">{label}</Text>
-//         <Text>hello</Text>
-//       </View>
-//     </View>
-//     {trailing}
-//   </View>
-// );
-
 const DetailSection: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
   children,
@@ -64,6 +50,7 @@ export const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
   onApply,
 }) => {
   const route = useRoute<EventDetailRouteProp>();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const eventId = eventIdProp ?? route.params?.eventId;
   const { data: event } = usePopularEventDetail(eventId);
 
@@ -178,9 +165,15 @@ export const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
               source={{ uri: event.user.profileImage }}
               style={styles.organiserAvatar}
             />
-            <Text variant="body" color="textPrimary">
-              {event.user?.name}
-            </Text>
+            <Pressable
+              onPress={() =>
+                navigation.navigate("UserDetail", { user: event.user })
+              }
+            >
+              <Text variant="body" color="textPrimary">
+                {event.user?.name}
+              </Text>
+            </Pressable>
           </View>
         </DetailSection>
 

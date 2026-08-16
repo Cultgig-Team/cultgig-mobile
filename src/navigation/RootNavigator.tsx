@@ -30,7 +30,11 @@ import { useOnboardingStore } from "../store/onboardingStore";
 import { theme } from "../theme";
 import { RootStackParamList } from "./types";
 import { EventDetailScreen } from "../screens/EventDetail/EventDetailScreen";
+import { UserDetailScreen } from "../screens/UserDetail/UserDetailScreen";
 import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
+import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
+import { ProposalScreen } from "../screens/OnboardingOfApplyEvent/ProposalScreen";
+import { SubmitProposalScreen } from "../screens/OnboardingOfApplyEvent/SubmitProposalScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -251,18 +255,93 @@ const InterestsRoute = () => {
 const EventDetailRoute = () => {
   const navigation = useNavigation<NavProp>();
   const route = useRoute<RouteProp<RootStackParamList, "EventDetail">>();
+  const eventId = route.params.eventId;
 
   return (
     <EventDetailScreen
-      eventId={route.params.eventId}
+      eventId={eventId}
       onBack={() => navigation.goBack()}
-      onApply={() => navigation.navigate("ApplyonEvent")}
+      onApply={() => navigation.navigate("ApplyonEvent", { eventId })}
+    />
+  );
+};
+
+const UserDetailRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "UserDetail">>();
+
+  return (
+    <UserDetailScreen
+      user={route.params.user}
+      onBack={() => navigation.goBack()}
     />
   );
 };
 
 const ApplyEventRoute = () => {
-  return <ApplyOnEvent />;
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "ApplyonEvent">>();
+
+  return (
+    <ApplyOnEvent
+      eventId={route.params?.eventId}
+      onBack={() => navigation.goBack()}
+      onContinue={(budget) => navigation.navigate("NegotiatePrice", { budget })}
+    />
+  );
+};
+
+const NegotiatePriceRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "NegotiatePrice">>();
+
+  return (
+    <NegotiatePriceScreen
+      budget={route.params.budget}
+      onBack={() => navigation.goBack()}
+      onContinue={(proposedPrice: number) =>
+        navigation.navigate("Proposal", {
+          budget: route.params.budget,
+          proposedPrice,
+        })
+      }
+    />
+  );
+};
+
+const ProposalRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "Proposal">>();
+
+  return (
+    <ProposalScreen
+      budget={route.params.budget}
+      proposedPrice={route.params.proposedPrice}
+      onBack={() => navigation.goBack()}
+      onContinue={(proposalDescription: string) =>
+        navigation.navigate("SubmitProposal", {
+          budget: route.params.budget,
+          proposedPrice: route.params.proposedPrice,
+          proposalDescription,
+        })
+      }
+    />
+  );
+};
+
+const SubmitProposalRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "SubmitProposal">>();
+
+  return (
+    <SubmitProposalScreen
+      budget={route.params.budget}
+      proposedPrice={route.params.proposedPrice}
+      proposalDescription={route.params.proposalDescription}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate("MainTabs")}
+    />
+  );
 };
 
 export const RootNavigator = () => {
@@ -301,7 +380,11 @@ export const RootNavigator = () => {
           options={{ headerShown: true, title: "Artwork" }}
         />
         <Stack.Screen name="EventDetail" component={EventDetailRoute} />
+        <Stack.Screen name="UserDetail" component={UserDetailRoute} />
         <Stack.Screen name="ApplyonEvent" component={ApplyEventRoute} />
+        <Stack.Screen name="NegotiatePrice" component={NegotiatePriceRoute} />
+        <Stack.Screen name="Proposal" component={ProposalRoute} />
+        <Stack.Screen name="SubmitProposal" component={SubmitProposalRoute} />
         <Stack.Screen
           name="Login"
           component={LoginScreen}

@@ -32,7 +32,6 @@ export const HomeScreen = () => {
     isLoading: eventsLoading,
     error: eventsError,
   } = usePopularEvents();
-  // console.log(popularEvents);
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <View style={styles.header}>
