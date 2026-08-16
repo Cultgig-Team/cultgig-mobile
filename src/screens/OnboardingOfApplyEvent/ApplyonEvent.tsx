@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../../theme";
 import { ChevronLeft, ChevronRight, Lightbulb } from "lucide-react-native";
 import { usePopularEventDetail } from "@/hooks/useArtworks";
+import { SegmentedProgress } from "@/components/molecules";
 
 interface ApplyOnEventProps {
   eventId?: number | undefined;
@@ -40,8 +41,9 @@ export const ApplyOnEvent: React.FC<ApplyOnEventProps> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
       >
-        <View>
+        <View style={{ flexDirection: "row", gap: 81 }}>
           <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+          <SegmentedProgress currentStep={1} totalSteps={4} />
         </View>
         <Text variant="h1" style={styles.heading}>
           How would you like to apply for this gig ?

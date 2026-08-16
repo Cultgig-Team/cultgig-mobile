@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
-import { Button, Text } from "@/components";
+import { Button, SegmentedProgress, Text } from "@/components";
 import { theme } from "../../theme";
 
 interface SubmitProposalScreenProps {
@@ -23,7 +23,10 @@ export const SubmitProposalScreen: React.FC<SubmitProposalScreenProps> = ({
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+        <View style={{ flexDirection: "row", gap: 81 }}>
+          <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+          <SegmentedProgress currentStep={4} totalSteps={4} />
+        </View>
 
         <Text variant="h1" style={styles.title}>
           Alright ready to post your proposal?

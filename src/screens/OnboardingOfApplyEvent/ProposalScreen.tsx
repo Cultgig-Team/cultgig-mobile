@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft, Lightbulb } from "lucide-react-native";
-import { Button, Text } from "@/components";
+import { Button, SegmentedProgress, Text } from "@/components";
 import { theme } from "../../theme";
 
 interface ProposalScreenProps {
@@ -24,7 +24,10 @@ export const ProposalScreen: React.FC<ProposalScreenProps> = ({
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+        <View style={{ flexDirection: "row", gap: 81 }}>
+          <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+          <SegmentedProgress currentStep={3} totalSteps={4} />
+        </View>
 
         <Text variant="h1" style={styles.title}>
           Write your final gig proposal ?
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
   },
   tipLabel: {
     fontWeight: "bold",
+    color: theme.colors.primary,
   },
   footer: {
     borderTopWidth: 1,

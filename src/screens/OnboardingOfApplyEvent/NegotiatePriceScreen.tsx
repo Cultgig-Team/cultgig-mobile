@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
-import { Button, Input, Text } from "@/components";
+import { Button, Input, SegmentedProgress, Text } from "@/components";
 import { theme } from "../../theme";
 
 interface NegotiatePriceScreenProps {
@@ -30,7 +30,10 @@ export const NegotiatePriceScreen: React.FC<NegotiatePriceScreenProps> = ({
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+        <View style={{ flexDirection: "row", gap: 81 }}>
+          <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
+          <SegmentedProgress currentStep={2} totalSteps={4} />
+        </View>
 
         <Text variant="h1" style={styles.title}>
           How would you like to negotiate ?
