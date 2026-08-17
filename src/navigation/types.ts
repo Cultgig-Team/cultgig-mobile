@@ -20,6 +20,14 @@ export type RootStackParamList = {
   Budget: undefined;
   Experience: undefined;
   Interests: undefined;
+  // Client onboarding branch
+  PersonalBio: undefined;
+  BusinessBasicBio: undefined;
+  ClientLocation: undefined;
+  BusinessBio: undefined;
+  BusinessCategory: undefined;
+  ClientSocialLinks: undefined;
+  BusinessPhotos: undefined;
   MainTabs: undefined;
   ArtworkDetail: { artworkId: string };
   Login: undefined;
