@@ -1,16 +1,19 @@
-import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  Bell,
-  FileText,
-  FileCheck,
-  Star,
-  Eye,
-  Bookmark,
-  MapPin,
-  Clock,
-  Calendar,
-} from "lucide-react-native";
+  ScrollView,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Bell, FileText, FileCheck, Star, Eye } from "lucide-react-native";
+import { usePopularEvents } from "../../hooks/useArtworks";
+import EventCard from "../../components/templates/EventCard/EventCard";
+import { useOnboardingStore } from "../../store/onboardingStore";
+import { theme } from "../../theme";
 
 // --- DUMMY DATA ---
 const AVATAR_URL = "https://randomuser.me/api/portraits/men/32.jpg";
@@ -38,112 +41,128 @@ const ActivityCard = ({
   </View>
 );
 
-// 2. Gig Card Component
-const GigCard = () => (
-  <View className="bg-white rounded-2xl p-4 mb-4 border border-gray-200 shadow-sm">
-    {/* Card Header */}
-    <View className="flex-row justify-between items-center mb-3">
-      <View className="flex-row items-center gap-2">
-        <Image source={{ uri: AVATAR_URL }} className="w-6 h-6 rounded-full" />
-        <Text className="text-gray-500 text-sm font-medium">
-          Posted by Rajesh
-        </Text>
-        <Text variant="h2">Popular Events near you</Text>
-        {eventsLoading && (
-          <ActivityIndicator
-            style={styles.loader}
-            color={theme.colors.primary}
-          />
-        )}
-
-        {eventsError && (
-          <Text variant="body" color="error" style={styles.padded}>
-            Couldn't load popular events.
-          </Text>
-        )}
-        {!eventsLoading && !eventsError && (
-          <FlatList
-            data={popularEvents ?? []}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <EventCard event={item} />}
-          />
-        )}
-      </View>
-      <TouchableOpacity>
-        <Bookmark size={22} color="#1f2937" />
-      </TouchableOpacity>
-    </View>
-
-    {/* Gig Title */}
-    <Text className="text-lg font-bold text-gray-900 mb-4 leading-tight">
-      Hiring experienced Content Writers & photographers...
-    </Text>
-
-    {/* Details Section */}
-    <View className="flex-col gap-2">
-      <View className="flex-row items-center gap-2">
-        <MapPin size={16} color="#6b7280" />
-        <Text className="text-gray-600 font-medium">Maharashtra, Mumbai</Text>
-      </View>
-
-      <View className="flex-row items-center gap-2">
-        <Clock size={16} color="#6b7280" />
-        <Text className="text-gray-600 font-medium">9:00 AM</Text>
-      </View>
-
-      {/* Date and Price Row */}
-      <View className="flex-row justify-between items-center mt-1">
-        <View className="flex-row items-center gap-2">
-          <Calendar size={16} color="#6b7280" />
-          <Text className="text-gray-600 font-medium">On Wed, 28 Sept</Text>
-        </View>
-        <Text className="text-lg font-extrabold text-gray-900">₹5,000</Text>
-      </View>
-    </View>
-  </View>
-);
-
 // --- MAIN SCREEN ---
 export default function HomeScreen() {
+  const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
+  const role = primaryIntent ?? "artist";
+
+  const {
+    data: popularEvents,
+    isLoading: eventsLoading,
+    error: eventsError,
+  } = usePopularEvents();
+
+  // --- CLIENT ROLE: placeholder dashboard ---
+  if (role === "client") {
+    return (
+      <SafeAreaView style={{ flex: 1 }} className="bg-white">
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-2xl font-extrabold text-gray-900 mb-2">
+            Coming Soon
+          </Text>
+          <Text className="text-gray-500 text-center">
+            The client dashboard is under construction. Please check back later.
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // --- ARTIST ROLE: Home screen---
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-white">
-      {/* Top Header */}
-      <View className="flex-row justify-between items-center px-6 pt-4 pb-2">
-        <TouchableOpacity>
-          <Image
-            source={{ uri: AVATAR_URL }}
-            className="w-11 h-11 rounded-full border border-gray-200"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity className="p-2">
-          <Bell size={26} color="#1f2937" />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
-        {/* My Activity Section */}
-        <Text className="text-2xl font-extrabold text-gray-900 mt-6 mb-4">
-          My Activity
-        </Text>
-
-        <View className="flex-row flex-wrap justify-between">
-          <ActivityCard icon={FileText} count="5" label="Applied Gigs" />
-          <ActivityCard icon={FileCheck} count="0" label="Active Gigs" />
-          <ActivityCard icon={Star} count="12" label="Total Rating" />
-          <ActivityCard icon={Eye} count="10k" label="Total Views" />
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 24 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Top Header */}
+        <View className="flex-row justify-between items-center px-6 pt-4 pb-2">
+          <TouchableOpacity>
+            <Image
+              source={{ uri: AVATAR_URL }}
+              className="w-11 h-11 rounded-full border border-gray-200"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity className="p-2">
+            <Bell size={26} color="#1f2937" />
+          </TouchableOpacity>
         </View>
 
-        {/* Popular Gigs Section */}
-        <Text className="text-xl font-extrabold text-gray-900 mt-6 mb-4">
-          Popular gigs near you
-        </Text>
+        <View className="flex-1 px-6">
+          {/* My Activity Section */}
+          <Text className="text-2xl font-extrabold text-gray-900 mt-6 mb-4">
+            My Activity
+          </Text>
 
-        <GigCard />
-        <GigCard />
+          <View className="flex-row flex-wrap justify-between">
+            <ActivityCard icon={FileText} count="5" label="Applied Gigs" />
+            <ActivityCard icon={FileCheck} count="0" label="Active Gigs" />
+            <ActivityCard icon={Star} count="12" label="Total Rating" />
+            <ActivityCard icon={Eye} count="10k" label="Total Views" />
+          </View>
 
-        {/* Extra padding at the bottom so content isn't hidden behind the tab bar */}
-        <View className="h-10" />
+          {/* Popular Gigs Section */}
+          <Text className="text-xl font-extrabold text-gray-900 mt-6 mb-4">
+            Popular Events near you
+          </Text>
+
+          {eventsLoading && (
+            <ActivityIndicator
+              style={styles.loader}
+              color={theme.colors.primary}
+            />
+          )}
+
+          {eventsError && (
+            <Text style={styles.padded}>Couldn't load popular events.</Text>
+          )}
+          {!eventsLoading && !eventsError && (
+            <FlatList
+              data={popularEvents ?? []}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => <EventCard event={item} />}
+              scrollEnabled={false}
+            />
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  header: {
+    paddingHorizontal: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+  },
+  list: {
+    paddingHorizontal: theme.spacing.md,
+  },
+  loader: {
+    marginTop: theme.spacing.xl,
+  },
+  padded: {
+    paddingVertical: theme.spacing.md,
+  },
+  card: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#D9D9D9",
+    borderRadius: 16,
+    padding: 16,
+  },
+  cardHeaderAndFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  locationAndTime: {
+    flexDirection: "row",
+    gap: 13.75,
+    padding: 4,
+  },
+});

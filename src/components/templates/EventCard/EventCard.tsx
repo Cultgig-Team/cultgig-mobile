@@ -13,7 +13,8 @@ import { PopularEvent } from "@/services/artworkService";
 import { RootStackParamList } from "../../../navigation/types";
 
 function EventCard({ event }: { event: PopularEvent }) {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
     <Pressable
@@ -33,32 +34,32 @@ function EventCard({ event }: { event: PopularEvent }) {
           <Text>Posted by {event.user?.name}</Text>
         </View>
         <TouchableOpacity>
-          <Bookmark />
+          <Bookmark strokeWidth={1.5} />
         </TouchableOpacity>
       </View>
 
       <View>
-        <Text variant="titleLg" style={{ paddingTop: 10, paddingBottom: 10 }}>
+        <Text variant="titleMd" style={{ paddingTop: 10, paddingBottom: 10 }}>
           {event.title}
         </Text>
         <View style={styles.locationAndTime}>
-          <MapPin />
-          <Text variant="body">
+          <MapPin size={20} />
+          <Text variant="bodySmall">
             {event.location ?? event.thingsToKnow?.location}
           </Text>
         </View>
         <View style={styles.locationAndTime}>
-          <Clock2 />
-          <Text variant="body">
-            {event.thingsToKnow?.time ?? event.startsAt}
+          <Clock2 size={20} />
+          <Text variant="bodySmall">
+            {event.thingsToKnow?.time.split("-")[0] ?? event.startsAt}
           </Text>
         </View>
         <View style={styles.cardHeaderAndFooter}>
           {/* //leftside  */}
           <View style={styles.locationAndTime}>
-            <Calendar />
-            <Text variant="body">
-              {event.thingsToKnow?.date ?? event.startsAt}
+            <Calendar size={20} />
+            <Text variant="bodySmall">
+              On Wed,{event.thingsToKnow?.date.split("-")[0] ?? event.startsAt}
             </Text>
           </View>
           {/* rightside */}
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     borderColor: "#D9D9D9",
     borderRadius: 16,
     padding: 16,
+    backgroundColor: "#FFFFFF",
   },
   cardHeaderAndFooter: {
     flexDirection: "row",

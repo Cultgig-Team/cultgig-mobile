@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
-import { Button, Text } from "@/components";
+import { Button, Text } from "../../components";
 import { theme } from "../../theme";
 import type { User } from "../../services/artworkService";
 
