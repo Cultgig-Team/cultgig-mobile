@@ -5,7 +5,7 @@
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["src/*", "./*"],
       "@theme": ["src/theme"],
       "@theme/*": ["src/theme/*"],
       "@components": ["src/components"],
@@ -19,5 +19,5 @@
       "@types/*": ["src/types/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx", "declarations.d.ts"]
 }
