@@ -1,40 +1,33 @@
-import React from "react";
-import {
-  NavigationContainer,
-  useNavigation,
-  useRoute,
-  RouteProp,
-} from "@react-navigation/native";
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from "@react-navigation/native-stack";
-import { MainTabNavigator } from "./MainTabNavigator";
-import { ArtworkDetailScreen } from "../screens/ArtworkDetail/ArtworkDetailScreen";
-import { LoginScreen } from "../screens/Login/LoginScreen";
-import { WelcomeScreen } from "../screens/Onboarding/WelcomeScreen";
-import { RoleSelectionScreen } from "../screens/Onboarding/RoleSelectionScreen";
-import { RoleConfirmationScreen } from "../screens/Onboarding/RoleConfirmationScreen";
-import { SignUpScreen } from "../screens/Onboarding/SignUpScreen";
-import { OTPScreen } from "../screens/Onboarding/OTPScreen";
-import { BasicBioScreen } from "../screens/Onboarding/BasicBioScreen";
-import { LocationScreen } from "../screens/Onboarding/LocationScreen";
-import { SkillBioScreen } from "../screens/Onboarding/SkillBioScreen";
-import { CategorySelectScreen } from "../screens/Onboarding/CategorySelectScreen";
-import { PortfolioUploadScreen } from "../screens/Onboarding/PortfolioUploadScreen";
-import { SocialLinksScreen } from "../screens/Onboarding/SocialLinksScreen";
-import { BudgetScreen } from "../screens/Onboarding/BudgetScreen";
-import { ExperienceScreen } from "../screens/Onboarding/ExperienceScreen";
-import { InterestsScreen } from "../screens/Onboarding/InterestsScreen";
-import { useOnboardingStore } from "../store/onboardingStore";
-import { theme } from "../theme";
-import { RootStackParamList } from "./types";
-import { EventDetailScreen } from "../screens/EventDetail/EventDetailScreen";
-import { UserDetailScreen } from "../screens/UserDetail/UserDetailScreen";
-import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
-import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
-import { ProposalScreen } from "../screens/OnboardingOfApplyEvent/ProposalScreen";
-import { SubmitProposalScreen } from "../screens/OnboardingOfApplyEvent/SubmitProposalScreen";
+import React from 'react';
+import { NavigationContainer, useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainTabNavigator } from './MainTabNavigator';
+import { ArtworkDetailScreen } from '../screens/ArtworkDetail/ArtworkDetailScreen';
+import { LoginScreen } from '../screens/Login/LoginScreen';
+import { WelcomeScreen } from '../screens/Onboarding/WelcomeScreen';
+import { RoleSelectionScreen } from '../screens/Onboarding/RoleSelectionScreen';
+import { RoleConfirmationScreen } from '../screens/Onboarding/RoleConfirmationScreen';
+import { SignUpScreen } from '../screens/Onboarding/SignUpScreen';
+import { OTPScreen } from '../screens/Onboarding/OTPScreen';
+import { BasicBioScreen } from '../screens/Onboarding/BasicBioScreen';
+import { LocationScreen } from '../screens/Onboarding/LocationScreen';
+import { SkillBioScreen } from '../screens/Onboarding/SkillBioScreen';
+import { CategorySelectScreen } from '../screens/Onboarding/CategorySelectScreen';
+import { PortfolioUploadScreen } from '../screens/Onboarding/PortfolioUploadScreen';
+import { SocialLinksScreen } from '../screens/Onboarding/SocialLinksScreen';
+import { BudgetScreen } from '../screens/Onboarding/BudgetScreen';
+import { ExperienceScreen } from '../screens/Onboarding/ExperienceScreen';
+import { InterestsScreen } from '../screens/Onboarding/InterestsScreen';
+import { PersonalBioScreen } from '../screens/Onboarding/PersonalBioScreen';
+import { BusinessBasicBioScreen } from '../screens/Onboarding/BusinessBasicBioScreen';
+import { ClientLocationScreen } from '../screens/Onboarding/ClientLocationScreen';
+import { BusinessBioScreen } from '../screens/Onboarding/BusinessBioScreen';
+import { BusinessCategoryScreen } from '../screens/Onboarding/BusinessCategoryScreen';
+import { ClientSocialLinksScreen } from '../screens/Onboarding/ClientSocialLinksScreen';
+import { BusinessPhotosScreen } from '../screens/Onboarding/BusinessPhotosScreen';
+import { useOnboardingStore } from '../store/onboardingStore';
+import { theme } from '../theme';
+import { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -59,6 +52,23 @@ const ARTIST_STEPS: (keyof RootStackParamList)[] = [
 ];
 const progressFor = (screen: keyof RootStackParamList) =>
   (ARTIST_STEPS.indexOf(screen) + 1) / ARTIST_STEPS.length;
+
+/**
+ * Client branch step order. Only PersonalBio exists so far — extend
+ * this array (and add the matching route below) as each new client
+ * screen gets built, same as ARTIST_STEPS above.
+ */
+const CLIENT_STEPS: (keyof RootStackParamList)[] = [
+  'PersonalBio',
+  'BusinessBasicBio',
+  'ClientLocation',
+  'BusinessBio',
+  'BusinessCategory',
+  'ClientSocialLinks',
+  'BusinessPhotos',
+];
+const clientProgressFor = (screen: keyof RootStackParamList) =>
+  (CLIENT_STEPS.indexOf(screen) + 1) / CLIENT_STEPS.length;
 
 /**
  * Thin navigation-connected wrappers. Keeps the actual screen
@@ -141,6 +151,92 @@ const OTPRoute = () => {
         }
         navigation.navigate("BasicBio");
       }}
+    />
+  );
+};
+
+const PersonalBioRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <PersonalBioScreen
+      progress={clientProgressFor('PersonalBio')}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate('BusinessBasicBio')}
+    />
+  );
+};
+
+const BusinessBasicBioRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <BusinessBasicBioScreen
+      progress={clientProgressFor('BusinessBasicBio')}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate('ClientLocation')}
+      onSkip={() => navigation.navigate('ClientLocation')}
+    />
+  );
+};
+
+const ClientLocationRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <ClientLocationScreen
+      progress={clientProgressFor('ClientLocation')}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate('BusinessBio')}
+    />
+  );
+};
+
+const BusinessBioRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <BusinessBioScreen
+      progress={clientProgressFor('BusinessBio')}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate('BusinessCategory')}
+      onSkip={() => navigation.navigate('BusinessCategory')}
+    />
+  );
+};
+
+const BusinessCategoryRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <BusinessCategoryScreen
+      progress={clientProgressFor('BusinessCategory')}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate('ClientSocialLinks')}
+      onSkip={() => navigation.navigate('ClientSocialLinks')}
+    />
+  );
+};
+
+const ClientSocialLinksRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <ClientSocialLinksScreen
+      progress={clientProgressFor('ClientSocialLinks')}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate('BusinessPhotos')}
+      onSkip={() => navigation.navigate('BusinessPhotos')}
+    />
+  );
+};
+
+const BusinessPhotosRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  return (
+    <BusinessPhotosScreen
+      progress={clientProgressFor('BusinessPhotos')}
+      onBack={() => navigation.goBack()}
+      // Last step of the Client branch — hands off into the main app.
+      // TODO: submit `answers` from useOnboardingStore to the real
+      // user profile (Appwrite) here before navigating, then reset().
+      // Mirrors the same TODO on InterestsRoute for the Artist branch.
+      onContinue={() => navigation.navigate('MainTabs')}
+      onSkip={() => navigation.navigate('MainTabs')}
     />
   );
 };
@@ -373,6 +469,13 @@ export const RootNavigator = () => {
         <Stack.Screen name="Budget" component={BudgetRoute} />
         <Stack.Screen name="Experience" component={ExperienceRoute} />
         <Stack.Screen name="Interests" component={InterestsRoute} />
+        <Stack.Screen name="PersonalBio" component={PersonalBioRoute} />
+        <Stack.Screen name="BusinessBasicBio" component={BusinessBasicBioRoute} />
+        <Stack.Screen name="ClientLocation" component={ClientLocationRoute} />
+        <Stack.Screen name="BusinessBio" component={BusinessBioRoute} />
+        <Stack.Screen name="BusinessCategory" component={BusinessCategoryRoute} />
+        <Stack.Screen name="ClientSocialLinks" component={ClientSocialLinksRoute} />
+        <Stack.Screen name="BusinessPhotos" component={BusinessPhotosRoute} />
         <Stack.Screen name="MainTabs" component={MainTabNavigator} />
         <Stack.Screen
           name="ArtworkDetail"
