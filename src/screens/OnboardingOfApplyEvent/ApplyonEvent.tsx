@@ -5,8 +5,8 @@ import { Button } from "../../components/atoms/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../../theme";
 import { ChevronLeft, ChevronRight, Lightbulb } from "lucide-react-native";
-import { usePopularEventDetail } from "@/hooks/useArtworks";
-import { SegmentedProgress } from "@/components/molecules";
+import { usePopularEventDetail } from "../../hooks/useArtworks";
+import { SegmentedProgress } from "../../components/molecules/SegmentedProgress/SegmentedProgress";
 
 interface ApplyOnEventProps {
   eventId?: number | undefined;

@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
-import { Button, SegmentedProgress, Text } from "@/components";
+import { Button, SegmentedProgress, Text } from "../../components";
 import { theme } from "../../theme";
 
 interface SubmitProposalScreenProps {

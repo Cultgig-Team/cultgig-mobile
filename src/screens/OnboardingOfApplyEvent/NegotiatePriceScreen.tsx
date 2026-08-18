@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronLeft } from "lucide-react-native";
-import { Button, Input, SegmentedProgress, Text } from "@/components";
+import { Button, Input, SegmentedProgress, Text } from "../../components";
 import { theme } from "../../theme";
 
 interface NegotiatePriceScreenProps {

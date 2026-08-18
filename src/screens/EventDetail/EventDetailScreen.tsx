@@ -18,7 +18,9 @@ import {
   Calendar,
 } from "lucide-react-native";
 import { RootStackParamList } from "../../navigation/types";
-import { Button, Text } from "@/components";
+// import { Button, Text } from "../../components";
+import { Button } from "../../components/atoms/Button";
+import { Text } from "../../components/atoms/Text";
 import { usePopularEventDetail } from "../../hooks/useArtworks";
 import { theme } from "../../theme";
 import { SafeAreaView } from "react-native-safe-area-context";
