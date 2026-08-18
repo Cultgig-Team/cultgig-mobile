@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, ImageBackground, StyleSheet, Pressable } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text } from '../../components/atoms/Text';
-import { Button } from '../../components/atoms/Button';
-import { theme } from '../../theme';
+import React from "react";
+import { View, ImageBackground, StyleSheet, Pressable } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "../../components/atoms/Text";
+import { Button } from "../../components/atoms/Button";
+import { theme } from "../../theme";
 
 /**
  * SCREEN: Welcome
@@ -13,21 +13,24 @@ import { theme } from '../../theme';
  * / "Artist 103"). Hero photo background with a bottom-up dark
  * gradient, headline, and CTA.
  */
-const welcomeBg = require('../../../assets/onboarding/welcome-bg.png');
+const welcomeBg = require("../../../assets/onboarding/welcome-bg.png");
 
 interface WelcomeScreenProps {
   onGetStarted: () => void;
   onLogIn: () => void;
 }
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onGetStarted, onLogIn }) => {
+export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
+  onGetStarted,
+  onLogIn,
+}) => {
   const content = (
     <>
       <LinearGradient
-        colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.9)']}
+        colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"]}
         style={StyleSheet.absoluteFill}
       />
-      <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+      <SafeAreaView style={styles.safeArea} edges={["bottom"]}>
         <View style={styles.content}>
           <Text variant="headline" color="textInverse" style={styles.headline}>
             Where Artists & Gigs Get Discovered
@@ -36,11 +39,16 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onGetStarted, onLo
             Connect with amazing gigs & artists to grow your career
           </Text>
 
-          <Button label="Get started" onPress={onGetStarted} fullWidth style={styles.button} />
+          <Button
+            label="Get started"
+            onPress={onGetStarted}
+            fullWidth
+            style={styles.button}
+          />
 
           <Pressable onPress={onLogIn} hitSlop={8} style={styles.loginRow}>
             <Text variant="body" color="textInverse">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <Text variant="titleMd" color="primary">
                 Log in
               </Text>
@@ -52,7 +60,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onGetStarted, onLo
   );
 
   return (
-    <ImageBackground source={welcomeBg} style={styles.container} resizeMode="cover">
+    <ImageBackground
+      source={welcomeBg}
+      style={styles.container}
+      resizeMode="cover"
+    >
       {content}
     </ImageBackground>
   );
@@ -64,7 +76,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   content: {
     paddingHorizontal: theme.spacing.md,
@@ -81,6 +93,6 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   loginRow: {
-    alignItems: 'center',
+    alignItems: "center",
   },
 });

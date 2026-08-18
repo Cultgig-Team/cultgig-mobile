@@ -4,6 +4,8 @@
  * type checking on navigation.navigate('ScreenName', params).
  */
 
+import type { User } from "../services/artworkService";
+
 export type RootStackParamList = {
   Welcome: undefined;
   RoleSelection: undefined;
@@ -30,6 +32,16 @@ export type RootStackParamList = {
   BusinessPhotos: undefined;
   MainTabs: undefined;
   ArtworkDetail: { artworkId: string };
+  EventDetail: { eventId: number };
+  UserDetail: { user: User };
+  ApplyonEvent: { eventId?: number } | undefined;
+  NegotiatePrice: { budget: number };
+  Proposal: { budget: number; proposedPrice: number };
+  SubmitProposal: {
+    budget: number;
+    proposedPrice: number;
+    proposalDescription: string;
+  };
   Login: undefined;
 };
 
