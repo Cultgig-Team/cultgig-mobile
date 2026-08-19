@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import {
+  ArrowRight,
   Bell,
   FileText,
   FileCheck,
@@ -17,8 +18,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "../../components/atoms/Text";
 import { useArtworkFeed, usePopularEvents } from "../../hooks/useArtworks";
-import { theme } from "../../theme";
+import { useOnboardingStore } from "../../store/onboardingStore";
+import { colors, theme } from "../../theme";
 import EventCard from "@/components/templates/EventCard/EventCard";
+import { Input } from "../../components/atoms/Input/";
+import { Button } from "../../components";
+import { CategoryGridCard } from "../../components/molecules/CategoryGridCard";
 /**
  * SCREEN: Home
  * -------------------------------------------------------
@@ -31,7 +36,38 @@ import EventCard from "@/components/templates/EventCard/EventCard";
 // --- DUMMY DATA ---
 const AVATAR_URL = "https://randomuser.me/api/portraits/men/32.jpg";
 
-// --- REUSABLE COMPONENTS ---
+const CATEGORIES: { key: string; label: string; image: number }[] = [
+  {
+    key: "photographer",
+    label: "Photographer",
+    image: require("../../../assets/onboarding/categories/Photographer.png"),
+  },
+  {
+    key: "dancer",
+    label: "Dancer",
+    image: require("../../../assets/onboarding/categories/Dancer.png"),
+  },
+  {
+    key: "guitarist",
+    label: "Guitarist",
+    image: require("../../../assets/onboarding/categories/Guitarist.png"),
+  },
+  {
+    key: "painter",
+    label: "Painter",
+    image: require("../../../assets/onboarding/categories/Painter.png"),
+  },
+  {
+    key: "comedian",
+    label: "Comedian",
+    image: require("../../../assets/onboarding/categories/Comedian.png"),
+  },
+  {
+    key: "videographer",
+    label: "Videographer",
+    image: require("../../../assets/onboarding/categories/Videographer.png"),
+  },
+];
 
 // 1. Activity Card Component
 const ActivityCard = ({
@@ -54,20 +90,71 @@ const ActivityCard = ({
   </View>
 );
 
-
 export const HomeScreen = () => {
-  const {
-    data: artworks,
-    isLoading: artworksLoading,
-    error: artworksError,
-  } = useArtworkFeed();
+  const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
+  const role = primaryIntent ?? "artist";
+  const [selected, setSelected] = useState<string | null>(null);
 
   const {
     data: popularEvents,
     isLoading: eventsLoading,
     error: eventsError,
   } = usePopularEvents();
-
+  // home screen for client
+  if (role === "client") {
+    return (
+      <SafeAreaView edges={["top"]}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.clientHero}>
+            <View style={styles.scrollContainer}>
+              <View style={styles.clientHeader}>
+                <TouchableOpacity>
+                  <Text variant="confirmTitle" style={styles.clientLogo}>
+                    Cultgig
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Bell size={26} color="#1f2937" />
+                </TouchableOpacity>
+              </View>
+              <Text variant="titleMd" style={styles.clientGreeting}>
+                Good Morning, Hrik
+              </Text>
+              <View style={styles.clientForm}>
+                <Text variant="h1">Post a Event. Get it Done.</Text>
+                <Input
+                  placeholder="In few words what do you need done?"
+                  style={styles.clientInput}
+                />
+                <Button
+                  label="Post Event"
+                  fullWidth
+                  style={styles.clientButton}
+                ></Button>
+              </View>
+            </View>
+          </View>
+          {/* category */}
+          <View style={styles.scrollContainer}>
+            <Text variant="h2" style={{ marginVertical: 24 }}>
+              Book artists in all categories
+            </Text>
+            <View style={styles.grid}>
+              {CATEGORIES.map((category) => (
+                <View key={category.key} style={styles.categoryItem}>
+                  <Image source={category.image} style={styles.categoryImage} />
+                  <Text variant="bodySmall" style={styles.categoryLabel}>
+                    {category.label}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+  // home screen for artrist
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       {/* Top Header */}
@@ -124,6 +211,55 @@ export const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  clientHero: {
+    backgroundColor: "#FAF2F9",
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: theme.colors.border,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    paddingBottom: 40,
+  },
+  clientHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  clientLogo: {
+    color: theme.colors.primary,
+  },
+  clientGreeting: {
+    marginTop: 40,
+    marginBottom: 36,
+  },
+  clientForm: {
+    gap: 16,
+  },
+  clientInput: {
+    paddingHorizontal: 16,
+    paddingVertical: 15,
+  },
+  clientButton: {
+    paddingVertical: 12,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    rowGap: theme.spacing.md,
+  },
+  categoryItem: {
+    width: "30%",
+  },
+  categoryImage: {
+    width: "100%",
+    height: 116,
+    borderRadius: 12,
+  },
+  categoryLabel: {
+    textAlign: "center",
+    paddingTop: 8,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -156,7 +292,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     marginTop: 20,
     marginBottom: 16,
-    paddingBottom:16,
+    paddingBottom: 16,
   },
   sectionTitleSecondary: {
     fontSize: 22,
@@ -164,8 +300,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     marginTop: 24,
     marginBottom: 16,
-    paddingBottom:15,
-
+    paddingBottom: 15,
   },
   activityGrid: {
     flexDirection: "row",
