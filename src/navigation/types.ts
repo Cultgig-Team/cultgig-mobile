@@ -47,7 +47,10 @@ export type RootStackParamList = {
 
 export type MainTabParamList = {
   Home: undefined;
-  Profile: undefined;
+  // Profile: undefined;
+  Search: undefined;
+  Calendar: undefined;
+  Message: undefined;
 };
 
 declare global {
