@@ -16,30 +16,30 @@
 
 export const palette = {
   // Brand "O" scale (confirmed steps marked)
-  o50: '#faf1f7',
-  o100: '#e8bfdf', // confirmed (inactive button bg)
-  o200: '#df9fd4',
-  o300: '#d470b4', // confirmed
-  o400: '#d85aa2',
-  o500: '#d03d90', // confirmed
-  o600: '#b8357e',
-  o700: '#a02f6c',
-  o800: '#913475', // confirmed
-  o900: '#6a2e62', // confirmed (primary)
+  o50: "#faf1f7",
+  o100: "#e8bfdf", // confirmed (inactive button bg)
+  o200: "#df9fd4",
+  o300: "#d470b4", // confirmed
+  o400: "#d85aa2",
+  o500: "#d03d90", // confirmed
+  o600: "#b8357e",
+  o700: "#a02f6c",
+  o800: "#913475", // confirmed
+  o900: "#6a2e62", // confirmed (primary)
 
   // Neutral "N" scale (confirmed steps marked)
-  white: '#ffffff', // confirmed
-  n50: '#f7f7f7',
-  n100: '#efefef',
-  n200: '#d9d9d9', // confirmed (borders)
-  n300: '#c4c4c4', // confirmed
-  n400: '#9d9d9d', // confirmed
-  n500: '#7b7b7b', // confirmed (secondary text)
-  n600: '#5c5c5c',
-  n700: '#404040',
-  n800: '#242424',
-  n900: '#141414',
-  black: '#000000', // confirmed
+  white: "#ffffff", // confirmed
+  n50: "#f7f7f7",
+  n100: "#efefef",
+  n200: "#d9d9d9", // confirmed (borders)
+  n300: "#c4c4c4", // confirmed
+  n400: "#9d9d9d", // confirmed
+  n500: "#7b7b7b", // confirmed (secondary text)
+  n600: "#5c5c5c",
+  n700: "#434343", // requested dark neutral from design token
+  n800: "#242424",
+  n900: "#141414",
+  black: "#000000", // confirmed
 } as const;
 
 export const colors = {
@@ -53,6 +53,7 @@ export const colors = {
   // Backgrounds
   background: palette.white,
   backgroundSecondary: palette.n50,
+  backgroundDark: palette.n700,
   surface: palette.white,
 
   // Text
@@ -67,14 +68,14 @@ export const colors = {
   borderFocused: palette.o900,
 
   // Feedback
-  success: '#22C55E',
-  error: '#EF4444',
-  warning: '#F59E0B',
-  info: '#3B82F6',
+  success: "#22C55E",
+  error: "#EF4444",
+  warning: "#F59E0B",
+  info: "#3B82F6",
 
   // Utility
-  transparent: 'transparent',
-  overlay: 'rgba(0,0,0,0.5)',
+  transparent: "transparent",
+  overlay: "rgba(0,0,0,0.5)",
 } as const;
 
 export type ColorToken = keyof typeof colors;

@@ -16,11 +16,11 @@
 
 export const fontFamily = {
   // Falls back to system font until the real font files are added — see note above
-  headline: 'BagossExtended-Bold',
-  regular: 'Satoshi-Medium',
-  medium: 'Satoshi-Medium',
-  bold: 'Satoshi-Bold',
-  black: 'Satoshi-Black',
+  headline: "BagossExtended-Bold",
+  regular: "Satoshi-Medium",
+  medium: "Satoshi-Medium",
+  bold: "Satoshi-Bold",
+  black: "Satoshi-Black",
 } as const;
 
 export const fontSize = {
@@ -30,17 +30,17 @@ export const fontSize = {
   md: 18,
   lg: 20,
   xl: 24,
-  '2xl': 28, // confirmed: onboarding question headers ("Hey, how do you want to get started?")
-  '3xl': 32,
-  '4xl': 40, // confirmed: Welcome screen hero headline
+  "2xl": 28, // confirmed: onboarding question headers ("Hey, how do you want to get started?")
+  "3xl": 32,
+  "4xl": 40, // confirmed: Welcome screen hero headline
 } as const;
 
 export const fontWeight = {
-  regular: '400',
-  medium: '500',
-  semiBold: '600',
-  bold: '700',
-  black: '900',
+  regular: "400",
+  medium: "500",
+  semiBold: "600",
+  bold: "700",
+  black: "900",
 } as const;
 
 export const lineHeight = {
@@ -50,9 +50,9 @@ export const lineHeight = {
   md: 26,
   lg: 28,
   xl: 32,
-  '2xl': 36,
-  '3xl': 40,
-  '4xl': 48,
+  "2xl": 36,
+  "3xl": 40,
+  "4xl": 48,
 } as const;
 
 /**
@@ -66,21 +66,21 @@ export const typography = {
   /** "Cultgig" wordmark on the Sign Up screen — Satoshi Black 40 (confirmed, NOT Bagoss) */
   logo: {
     fontFamily: fontFamily.black,
-    fontSize: fontSize['4xl'],
-    lineHeight: fontSize['4xl'] * 1.1,
+    fontSize: fontSize["4xl"],
+    lineHeight: fontSize["4xl"] * 1.1,
     fontWeight: fontWeight.black,
   },
   headline: {
     fontFamily: fontFamily.headline,
-    fontSize: fontSize['4xl'],
-    lineHeight: fontSize['4xl'] * 1.1,
+    fontSize: fontSize["4xl"],
+    lineHeight: fontSize["4xl"] * 1.1,
     fontWeight: fontWeight.bold,
   },
   /** Onboarding question header — Satoshi Black 28 (confirmed) */
   h1: {
     fontFamily: fontFamily.black,
-    fontSize: fontSize['2xl'],
-    lineHeight: lineHeight['2xl'],
+    fontSize: fontSize["2xl"],
+    lineHeight: lineHeight["2xl"],
     fontWeight: fontWeight.black,
   },
   /** Figma "Large Title/Large Title 3" — Satoshi Bold 26 (confirmed, confirmation screens) */
@@ -101,6 +101,12 @@ export const typography = {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.xl,
     lineHeight: lineHeight.xl,
+    fontWeight: fontWeight.bold,
+  },
+  h3: {
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.lg,
+    lineHeight: lineHeight.lg,
     fontWeight: fontWeight.bold,
   },
   /** Figma "Title/Title 4" — Satoshi Bold 18 (confirmed, e.g. "I'm a Artist") */
@@ -129,6 +135,12 @@ export const typography = {
     fontSize: fontSize.sm,
     lineHeight: lineHeight.sm,
     fontWeight: fontWeight.medium,
+  },
+  bodySmallBold: {
+    fontFamily: fontFamily.medium,
+    fontSize: fontSize.sm,
+    lineHeight: lineHeight.sm,
+    fontWeight: fontWeight.bold,
   },
   caption: {
     fontFamily: fontFamily.medium,

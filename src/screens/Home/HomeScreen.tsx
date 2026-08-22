@@ -1,16 +1,32 @@
-import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from "react";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import {
   Bell,
   FileText,
   FileCheck,
   Star,
   Eye,
-  Bookmark,
-  MapPin,
-  Clock,
-  Calendar,
 } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "../../components/atoms/Text";
+import { useArtworkFeed, usePopularEvents } from "../../hooks/useArtworks";
+import { theme } from "../../theme";
+import EventCard from "@/components/templates/EventCard/EventCard";
+/**
+ * SCREEN: Home
+ * -------------------------------------------------------
+ * Screens compose organisms/molecules/atoms + hooks. They
+ * should contain minimal styling logic themselves — layout
+ * glue only. Once you share the Home design, this becomes
+ * the real feed (ArtworkGrid organism, Header organism, etc).
+ */
 
 // --- DUMMY DATA ---
 const AVATAR_URL = "https://randomuser.me/api/portraits/men/32.jpg";
@@ -27,86 +43,52 @@ const ActivityCard = ({
   count: string | number;
   label: string;
 }) => (
-  <View className="bg-white rounded-2xl p-4 w-[48%] mb-4 border border-gray-100 shadow-sm">
-    <View className="flex-row justify-between items-center mb-3">
-      <View className="w-10 h-10 rounded-full bg-purple-50 items-center justify-center">
-        <Icon size={20} color="#a855f7" />
+  <View style={styles.activityCard}>
+    <View style={styles.activityCardHeader}>
+      <View style={styles.iconCircle}>
+        <Icon size={20} color={theme.colors.primary} />
       </View>
-      <Text className="text-2xl font-extrabold text-gray-900">{count}</Text>
+      <Text style={styles.activityCount}>{count}</Text>
     </View>
-    <Text className="text-gray-500 font-medium">{label}</Text>
+    <Text style={styles.activityLabel}>{label}</Text>
   </View>
 );
 
-// 2. Gig Card Component
-const GigCard = () => (
-  <View className="bg-white rounded-2xl p-4 mb-4 border border-gray-200 shadow-sm">
-    {/* Card Header */}
-    <View className="flex-row justify-between items-center mb-3">
-      <View className="flex-row items-center gap-2">
-        <Image source={{ uri: AVATAR_URL }} className="w-6 h-6 rounded-full" />
-        <Text className="text-gray-500 text-sm font-medium">
-          Posted by Rajesh
-        </Text>
-      </View>
-      <TouchableOpacity>
-        <Bookmark size={22} color="#1f2937" />
-      </TouchableOpacity>
-    </View>
 
-    {/* Gig Title */}
-    <Text className="text-lg font-bold text-gray-900 mb-4 leading-tight">
-      Hiring experienced Content Writers & photographers...
-    </Text>
+export const HomeScreen = () => {
+  const {
+    data: artworks,
+    isLoading: artworksLoading,
+    error: artworksError,
+  } = useArtworkFeed();
 
-    {/* Details Section */}
-    <View className="flex-col gap-2">
-      <View className="flex-row items-center gap-2">
-        <MapPin size={16} color="#6b7280" />
-        <Text className="text-gray-600 font-medium">Maharashtra, Mumbai</Text>
-      </View>
+  const {
+    data: popularEvents,
+    isLoading: eventsLoading,
+    error: eventsError,
+  } = usePopularEvents();
 
-      <View className="flex-row items-center gap-2">
-        <Clock size={16} color="#6b7280" />
-        <Text className="text-gray-600 font-medium">9:00 AM</Text>
-      </View>
-
-      {/* Date and Price Row */}
-      <View className="flex-row justify-between items-center mt-1">
-        <View className="flex-row items-center gap-2">
-          <Calendar size={16} color="#6b7280" />
-          <Text className="text-gray-600 font-medium">On Wed, 28 Sept</Text>
-        </View>
-        <Text className="text-lg font-extrabold text-gray-900">₹5,000</Text>
-      </View>
-    </View>
-  </View>
-);
-
-// --- MAIN SCREEN ---
-export default function HomeScreen() {
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-white">
+    <SafeAreaView style={styles.container} edges={["top"]}>
       {/* Top Header */}
-      <View className="flex-row justify-between items-center px-6 pt-4 pb-2">
+      <View style={styles.topHeader}>
         <TouchableOpacity>
-          <Image
-            source={{ uri: AVATAR_URL }}
-            className="w-11 h-11 rounded-full border border-gray-200"
-          />
+          <Image source={{ uri: AVATAR_URL }} style={styles.avatar} />
         </TouchableOpacity>
-        <TouchableOpacity className="p-2">
+        <TouchableOpacity style={styles.bellButton}>
           <Bell size={26} color="#1f2937" />
         </TouchableOpacity>
       </View>
 
-      <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 24 }}
+      >
         {/* My Activity Section */}
-        <Text className="text-2xl font-extrabold text-gray-900 mt-6 mb-4">
-          My Activity
-        </Text>
+        <Text style={styles.sectionTitleMain}>My Activity</Text>
 
-        <View className="flex-row flex-wrap justify-between">
+        <View style={styles.activityGrid}>
           <ActivityCard icon={FileText} count="5" label="Applied Gigs" />
           <ActivityCard icon={FileCheck} count="0" label="Active Gigs" />
           <ActivityCard icon={Star} count="12" label="Total Rating" />
@@ -114,16 +96,127 @@ export default function HomeScreen() {
         </View>
 
         {/* Popular Gigs Section */}
-        <Text className="text-xl font-extrabold text-gray-900 mt-6 mb-4">
-          Popular gigs near you
-        </Text>
+        <Text style={styles.sectionTitleSecondary}>Popular gigs near you</Text>
 
-        <GigCard />
-        <GigCard />
+        {eventsLoading && (
+          <ActivityIndicator
+            style={styles.loader}
+            color={theme.colors.primary}
+          />
+        )}
 
-        {/* Extra padding at the bottom so content isn't hidden behind the tab bar */}
-        <View className="h-10" />
+        {eventsError && (
+          <Text variant="body" color="error" style={styles.padded}>
+            Couldn't load popular events.
+          </Text>
+        )}
+
+        {!eventsLoading && !eventsError && (
+          <View style={styles.eventsList}>
+            {popularEvents?.map((item) => (
+              <EventCard key={item.id} event={item} />
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  topHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 8,
+  },
+  avatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+  bellButton: {
+    padding: 6,
+  },
+  scrollContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  sectionTitleMain: {
+    fontSize: 28,
+    fontWeight: "900",
+    color: "#000000",
+    marginTop: 20,
+    marginBottom: 16,
+    paddingBottom:16,
+  },
+  sectionTitleSecondary: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#000000",
+    marginTop: 24,
+    marginBottom: 16,
+    paddingBottom:15,
+
+  },
+  activityGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  activityCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    width: "48%",
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: "#F3F4F6",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  activityCardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  iconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#FAF2F9",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  activityCount: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#111827",
+  },
+  activityLabel: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#4B5563",
+  },
+  eventsList: {
+    gap: 16,
+  },
+  loader: {
+    marginTop: theme.spacing.xl,
+  },
+  padded: {
+    paddingVertical: theme.spacing.md,
+  },
+});

@@ -1,23 +1,31 @@
-import React from 'react';
-import { NavigationContainer, useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MainTabNavigator } from './MainTabNavigator';
-import { ArtworkDetailScreen } from '../screens/ArtworkDetail/ArtworkDetailScreen';
-import { LoginScreen } from '../screens/Login/LoginScreen';
-import { WelcomeScreen } from '../screens/Onboarding/WelcomeScreen';
-import { RoleSelectionScreen } from '../screens/Onboarding/RoleSelectionScreen';
-import { RoleConfirmationScreen } from '../screens/Onboarding/RoleConfirmationScreen';
-import { SignUpScreen } from '../screens/Onboarding/SignUpScreen';
-import { OTPScreen } from '../screens/Onboarding/OTPScreen';
-import { BasicBioScreen } from '../screens/Onboarding/BasicBioScreen';
-import { LocationScreen } from '../screens/Onboarding/LocationScreen';
-import { SkillBioScreen } from '../screens/Onboarding/SkillBioScreen';
-import { CategorySelectScreen } from '../screens/Onboarding/CategorySelectScreen';
-import { PortfolioUploadScreen } from '../screens/Onboarding/PortfolioUploadScreen';
-import { SocialLinksScreen } from '../screens/Onboarding/SocialLinksScreen';
-import { BudgetScreen } from '../screens/Onboarding/BudgetScreen';
-import { ExperienceScreen } from '../screens/Onboarding/ExperienceScreen';
-import { InterestsScreen } from '../screens/Onboarding/InterestsScreen';
+import React from "react";
+import {
+  NavigationContainer,
+  useNavigation,
+  useRoute,
+  RouteProp,
+} from "@react-navigation/native";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
+import { MainTabNavigator } from "./MainTabNavigator";
+import { ArtworkDetailScreen } from "../screens/ArtworkDetail/ArtworkDetailScreen";
+import { LoginScreen } from "../screens/Login/LoginScreen";
+import { WelcomeScreen } from "../screens/Onboarding/WelcomeScreen";
+import { RoleSelectionScreen } from "../screens/Onboarding/RoleSelectionScreen";
+import { RoleConfirmationScreen } from "../screens/Onboarding/RoleConfirmationScreen";
+import { SignUpScreen } from "../screens/Onboarding/SignUpScreen";
+import { OTPScreen } from "../screens/Onboarding/OTPScreen";
+import { BasicBioScreen } from "../screens/Onboarding/BasicBioScreen";
+import { LocationScreen } from "../screens/Onboarding/LocationScreen";
+import { SkillBioScreen } from "../screens/Onboarding/SkillBioScreen";
+import { CategorySelectScreen } from "../screens/Onboarding/CategorySelectScreen";
+import { PortfolioUploadScreen } from "../screens/Onboarding/PortfolioUploadScreen";
+import { SocialLinksScreen } from "../screens/Onboarding/SocialLinksScreen";
+import { BudgetScreen } from "../screens/Onboarding/BudgetScreen";
+import { ExperienceScreen } from "../screens/Onboarding/ExperienceScreen";
+import { InterestsScreen } from "../screens/Onboarding/InterestsScreen";
 import { PersonalBioScreen } from '../screens/Onboarding/PersonalBioScreen';
 import { BusinessBasicBioScreen } from '../screens/Onboarding/BusinessBasicBioScreen';
 import { ClientLocationScreen } from '../screens/Onboarding/ClientLocationScreen';
@@ -25,9 +33,15 @@ import { BusinessBioScreen } from '../screens/Onboarding/BusinessBioScreen';
 import { BusinessCategoryScreen } from '../screens/Onboarding/BusinessCategoryScreen';
 import { ClientSocialLinksScreen } from '../screens/Onboarding/ClientSocialLinksScreen';
 import { BusinessPhotosScreen } from '../screens/Onboarding/BusinessPhotosScreen';
-import { useOnboardingStore } from '../store/onboardingStore';
-import { theme } from '../theme';
-import { RootStackParamList } from './types';
+import { useOnboardingStore } from "../store/onboardingStore";
+import { theme } from "../theme";
+import { RootStackParamList } from "./types";
+import { EventDetailScreen } from "../screens/EventDetail/EventDetailScreen";
+import { UserDetailScreen } from "../screens/UserDetail/UserDetailScreen";
+import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
+import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
+import { ProposalScreen } from "../screens/OnboardingOfApplyEvent/ProposalScreen";
+import { SubmitProposalScreen } from "../screens/OnboardingOfApplyEvent/SubmitProposalScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -40,15 +54,15 @@ type NavProp = NativeStackNavigationProp<RootStackParamList>;
  * OTPRoute below.
  */
 const ARTIST_STEPS: (keyof RootStackParamList)[] = [
-  'BasicBio',
-  'Location',
-  'SkillBio',
-  'CategorySelect',
-  'PortfolioUpload',
-  'SocialLinks',
-  'Budget',
-  'Experience',
-  'Interests',
+  "BasicBio",
+  "Location",
+  "SkillBio",
+  "CategorySelect",
+  "PortfolioUpload",
+  "SocialLinks",
+  "Budget",
+  "Experience",
+  "Interests",
 ];
 const progressFor = (screen: keyof RootStackParamList) =>
   (ARTIST_STEPS.indexOf(screen) + 1) / ARTIST_STEPS.length;
@@ -81,8 +95,8 @@ const WelcomeRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <WelcomeScreen
-      onGetStarted={() => navigation.navigate('RoleSelection')}
-      onLogIn={() => navigation.navigate('Login')}
+      onGetStarted={() => navigation.navigate("RoleSelection")}
+      onLogIn={() => navigation.navigate("Login")}
     />
   );
 };
@@ -92,7 +106,7 @@ const RoleSelectionRoute = () => {
   return (
     <RoleSelectionScreen
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('RoleConfirmation')}
+      onContinue={() => navigation.navigate("RoleConfirmation")}
     />
   );
 };
@@ -102,12 +116,12 @@ const RoleConfirmationRoute = () => {
   const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
   // Guard: shouldn't happen since RoleSelection always sets this first,
   // but fall back to 'artist' rather than crash if ever reached directly.
-  const role = primaryIntent ?? 'artist';
+  const role = primaryIntent ?? "artist";
   return (
     <RoleConfirmationScreen
       role={role}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('SignUp')}
+      onContinue={() => navigation.navigate("SignUp")}
     />
   );
 };
@@ -118,19 +132,21 @@ const SignUpRoute = () => {
     <SignUpScreen
       onContinueWithMobile={() => {
         // TODO: wire real mobile OTP flow once Appwrite phone auth is set up
-        navigation.navigate('OTPVerification', { email: 'your mobile number' });
+        navigation.navigate("OTPVerification", { email: "your mobile number" });
       }}
       onContinueWithGoogle={() => {
         // TODO: wire real Google OAuth via Appwrite once configured
       }}
-      onSignUpWithEmail={(email) => navigation.navigate('OTPVerification', { email })}
+      onSignUpWithEmail={(email) =>
+        navigation.navigate("OTPVerification", { email })
+      }
     />
   );
 };
 
 const OTPRoute = () => {
   const navigation = useNavigation<NavProp>();
-  const route = useRoute<RouteProp<RootStackParamList, 'OTPVerification'>>();
+  const route = useRoute<RouteProp<RootStackParamList, "OTPVerification">>();
   const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
   return (
     <OTPScreen
@@ -142,12 +158,12 @@ const OTPRoute = () => {
       onVerify={(code) => {
         // TODO: actually verify `code` against the backend (Appwrite)
         // before navigating anywhere — right now any 5 digits pass.
-        if (primaryIntent === 'client') {
-          navigation.navigate('PersonalBio');
+        if (primaryIntent === "client") {
+          navigation.navigate("PersonalBio");
           return;
         }
         if (primaryIntent === 'artist') {
-          navigation.navigate('BasicBio');
+          navigation.navigate("BasicBio");
           return;
         }
         // primaryIntent is null — role selection was skipped somehow
@@ -250,9 +266,9 @@ const BasicBioRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <BasicBioScreen
-      progress={progressFor('BasicBio')}
+      progress={progressFor("BasicBio")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('Location')}
+      onContinue={() => navigation.navigate("Location")}
     />
   );
 };
@@ -261,9 +277,9 @@ const LocationRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <LocationScreen
-      progress={progressFor('Location')}
+      progress={progressFor("Location")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('SkillBio')}
+      onContinue={() => navigation.navigate("SkillBio")}
     />
   );
 };
@@ -272,10 +288,10 @@ const SkillBioRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <SkillBioScreen
-      progress={progressFor('SkillBio')}
+      progress={progressFor("SkillBio")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('CategorySelect')}
-      onSkip={() => navigation.navigate('CategorySelect')}
+      onContinue={() => navigation.navigate("CategorySelect")}
+      onSkip={() => navigation.navigate("CategorySelect")}
     />
   );
 };
@@ -284,10 +300,10 @@ const CategorySelectRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <CategorySelectScreen
-      progress={progressFor('CategorySelect')}
+      progress={progressFor("CategorySelect")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('PortfolioUpload')}
-      onSkip={() => navigation.navigate('PortfolioUpload')}
+      onContinue={() => navigation.navigate("PortfolioUpload")}
+      onSkip={() => navigation.navigate("PortfolioUpload")}
     />
   );
 };
@@ -296,10 +312,10 @@ const PortfolioUploadRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <PortfolioUploadScreen
-      progress={progressFor('PortfolioUpload')}
+      progress={progressFor("PortfolioUpload")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('SocialLinks')}
-      onSkip={() => navigation.navigate('SocialLinks')}
+      onContinue={() => navigation.navigate("SocialLinks")}
+      onSkip={() => navigation.navigate("SocialLinks")}
     />
   );
 };
@@ -308,10 +324,10 @@ const SocialLinksRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <SocialLinksScreen
-      progress={progressFor('SocialLinks')}
+      progress={progressFor("SocialLinks")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('Budget')}
-      onSkip={() => navigation.navigate('Budget')}
+      onContinue={() => navigation.navigate("Budget")}
+      onSkip={() => navigation.navigate("Budget")}
     />
   );
 };
@@ -320,9 +336,9 @@ const BudgetRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <BudgetScreen
-      progress={progressFor('Budget')}
+      progress={progressFor("Budget")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('Experience')}
+      onContinue={() => navigation.navigate("Experience")}
     />
   );
 };
@@ -331,9 +347,9 @@ const ExperienceRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <ExperienceScreen
-      progress={progressFor('Experience')}
+      progress={progressFor("Experience")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('Interests')}
+      onContinue={() => navigation.navigate("Interests")}
     />
   );
 };
@@ -342,13 +358,105 @@ const InterestsRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <InterestsScreen
-      progress={progressFor('Interests')}
+      progress={progressFor("Interests")}
       onBack={() => navigation.goBack()}
       // Last step of the Artist branch — hands off into the main app.
       // TODO: submit `answers` from useOnboardingStore to the real
       // user profile (Appwrite) here before navigating, then reset().
-      onContinue={() => navigation.navigate('MainTabs')}
-      onSkip={() => navigation.navigate('MainTabs')}
+      onContinue={() => navigation.navigate("MainTabs")}
+      onSkip={() => navigation.navigate("MainTabs")}
+    />
+  );
+};
+
+const EventDetailRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "EventDetail">>();
+  const eventId = route.params.eventId;
+
+  return (
+    <EventDetailScreen
+      eventId={eventId}
+      onBack={() => navigation.goBack()}
+      onApply={() => navigation.navigate("ApplyonEvent", { eventId })}
+    />
+  );
+};
+
+const UserDetailRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "UserDetail">>();
+
+  return (
+    <UserDetailScreen
+      user={route.params.user}
+      onBack={() => navigation.goBack()}
+    />
+  );
+};
+
+const ApplyEventRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "ApplyonEvent">>();
+
+  return (
+    <ApplyOnEvent
+      eventId={route.params?.eventId}
+      onBack={() => navigation.goBack()}
+      onContinue={(budget) => navigation.navigate("NegotiatePrice", { budget })}
+    />
+  );
+};
+
+const NegotiatePriceRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "NegotiatePrice">>();
+
+  return (
+    <NegotiatePriceScreen
+      budget={route.params.budget}
+      onBack={() => navigation.goBack()}
+      onContinue={(proposedPrice: number) =>
+        navigation.navigate("Proposal", {
+          budget: route.params.budget,
+          proposedPrice,
+        })
+      }
+    />
+  );
+};
+
+const ProposalRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "Proposal">>();
+
+  return (
+    <ProposalScreen
+      budget={route.params.budget}
+      proposedPrice={route.params.proposedPrice}
+      onBack={() => navigation.goBack()}
+      onContinue={(proposalDescription: string) =>
+        navigation.navigate("SubmitProposal", {
+          budget: route.params.budget,
+          proposedPrice: route.params.proposedPrice,
+          proposalDescription,
+        })
+      }
+    />
+  );
+};
+
+const SubmitProposalRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "SubmitProposal">>();
+
+  return (
+    <SubmitProposalScreen
+      budget={route.params.budget}
+      proposedPrice={route.params.proposedPrice}
+      proposalDescription={route.params.proposalDescription}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate("MainTabs")}
     />
   );
 };
@@ -367,7 +475,10 @@ export const RootNavigator = () => {
       >
         <Stack.Screen name="Welcome" component={WelcomeRoute} />
         <Stack.Screen name="RoleSelection" component={RoleSelectionRoute} />
-        <Stack.Screen name="RoleConfirmation" component={RoleConfirmationRoute} />
+        <Stack.Screen
+          name="RoleConfirmation"
+          component={RoleConfirmationRoute}
+        />
         <Stack.Screen name="SignUp" component={SignUpRoute} />
         <Stack.Screen name="OTPVerification" component={OTPRoute} />
         <Stack.Screen name="BasicBio" component={BasicBioRoute} />
@@ -387,8 +498,22 @@ export const RootNavigator = () => {
         <Stack.Screen name="ClientSocialLinks" component={ClientSocialLinksRoute} />
         <Stack.Screen name="BusinessPhotos" component={BusinessPhotosRoute} />
         <Stack.Screen name="MainTabs" component={MainTabNavigator} />
-        <Stack.Screen name="ArtworkDetail" component={ArtworkDetailScreen} options={{ headerShown: true, title: 'Artwork' }} />
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: true, title: 'Log In' }} />
+        <Stack.Screen
+          name="ArtworkDetail"
+          component={ArtworkDetailScreen}
+          options={{ headerShown: true, title: "Artwork" }}
+        />
+        <Stack.Screen name="EventDetail" component={EventDetailRoute} />
+        <Stack.Screen name="UserDetail" component={UserDetailRoute} />
+        <Stack.Screen name="ApplyonEvent" component={ApplyEventRoute} />
+        <Stack.Screen name="NegotiatePrice" component={NegotiatePriceRoute} />
+        <Stack.Screen name="Proposal" component={ProposalRoute} />
+        <Stack.Screen name="SubmitProposal" component={SubmitProposalRoute} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: true, title: "Log In" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
