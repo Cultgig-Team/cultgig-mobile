@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -7,23 +7,18 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import {
-  ArrowRight,
-  Bell,
-  FileText,
-  FileCheck,
-  Star,
-  Eye,
-} from "lucide-react-native";
+import { Bell, FileText, FileCheck, Star, Eye } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Text } from "../../components/atoms/Text";
-import { useArtworkFeed, usePopularEvents } from "../../hooks/useArtworks";
+import { usePopularEvents } from "../../hooks/useArtworks";
 import { useOnboardingStore } from "../../store/onboardingStore";
-import { colors, theme } from "../../theme";
+import { theme } from "../../theme";
 import EventCard from "@/components/templates/EventCard/EventCard";
 import { Input } from "../../components/atoms/Input/";
 import { Button } from "../../components";
-import { CategoryGridCard } from "../../components/molecules/CategoryGridCard";
+import { RootStackParamList } from "../../navigation/types";
 /**
  * SCREEN: Home
  * -------------------------------------------------------
@@ -91,10 +86,10 @@ const ActivityCard = ({
 );
 
 export const HomeScreen = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
   const role = primaryIntent ?? "artist";
-  const [selected, setSelected] = useState<string | null>(null);
-
   const {
     data: popularEvents,
     isLoading: eventsLoading,
@@ -104,34 +99,44 @@ export const HomeScreen = () => {
   if (role === "client") {
     return (
       <SafeAreaView edges={["top"]}>
+        {/* Top Header */}
+        <View style={styles.topHeader}>
+          <TouchableOpacity style={styles.bellButton}>
+            <Text variant="h1" color="primary">
+              Cultgig
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={{ uri: AVATAR_URL }} style={styles.avatar} />
+          </TouchableOpacity>
+        </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.clientHero}>
-            <View style={styles.scrollContainer}>
-              <View style={styles.clientHeader}>
-                <TouchableOpacity>
-                  <Text variant="confirmTitle" style={styles.clientLogo}>
-                    Cultgig
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Bell size={26} color="#1f2937" />
-                </TouchableOpacity>
-              </View>
-              <Text variant="titleMd" style={styles.clientGreeting}>
-                Good Morning, Hrik
+          {/* post event card  */}
+          <View style={styles.scrollContainer}>
+            <Input
+              placeholder="Search for artists, skills, generes.."
+              style={{
+                paddingVertical: 16.5,
+                paddingHorizontal: 12,
+                marginBottom: 20,
+                borderRadius: 12,
+              }}
+            />
+            <View style={styles.clientHero}>
+              <Text variant="h3" color="background">
+                Need an artist for your event?
               </Text>
-              <View style={styles.clientForm}>
-                <Text variant="h1">Post a Event. Get it Done.</Text>
-                <Input
-                  placeholder="In few words what do you need done?"
-                  style={styles.clientInput}
-                />
-                <Button
-                  label="Post Event"
-                  fullWidth
-                  style={styles.clientButton}
-                ></Button>
-              </View>
+              <Text color="background" variant="bodySmall">
+                Post what you're looking for and the directly to you — no
+                scrolling required.
+              </Text>
+              <Button
+                label="Post a Event →"
+                variant="secondary"
+                style={styles.postEventButton}
+                labelStyle={styles.postEventLabel}
+                onPress={() => navigation.navigate("CreateEvent")}
+              />
             </View>
           </View>
           {/* category */}
@@ -150,6 +155,8 @@ export const HomeScreen = () => {
               ))}
             </View>
           </View>
+
+          {/* how cultgig work */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -212,35 +219,21 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   clientHero: {
-    backgroundColor: "#FAF2F9",
-    borderBottomWidth: 1,
-    borderRightWidth: 1,
-    borderLeftWidth: 1,
+    backgroundColor: theme.colors.primary,
+    color: theme.colors.background,
+    gap: 12,
     borderColor: theme.colors.border,
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
-    paddingBottom: 40,
-  },
-  clientHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  clientLogo: {
-    color: theme.colors.primary,
-  },
-  clientGreeting: {
-    marginTop: 40,
-    marginBottom: 36,
-  },
-  clientForm: {
-    gap: 16,
-  },
-  clientInput: {
+    borderRadius: 16,
     paddingHorizontal: 16,
-    paddingVertical: 15,
+    paddingVertical: 16,
   },
-  clientButton: {
-    paddingVertical: 12,
+  postEventButton: {
+    width: 135,
+    height: 44,
+    borderRadius: 12,
+  },
+  postEventLabel: {
+    fontSize: 14,
   },
   grid: {
     flexDirection: "row",

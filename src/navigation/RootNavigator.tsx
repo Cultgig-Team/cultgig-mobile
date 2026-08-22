@@ -26,13 +26,13 @@ import { SocialLinksScreen } from "../screens/Onboarding/SocialLinksScreen";
 import { BudgetScreen } from "../screens/Onboarding/BudgetScreen";
 import { ExperienceScreen } from "../screens/Onboarding/ExperienceScreen";
 import { InterestsScreen } from "../screens/Onboarding/InterestsScreen";
-import { PersonalBioScreen } from '../screens/Onboarding/PersonalBioScreen';
-import { BusinessBasicBioScreen } from '../screens/Onboarding/BusinessBasicBioScreen';
-import { ClientLocationScreen } from '../screens/Onboarding/ClientLocationScreen';
-import { BusinessBioScreen } from '../screens/Onboarding/BusinessBioScreen';
-import { BusinessCategoryScreen } from '../screens/Onboarding/BusinessCategoryScreen';
-import { ClientSocialLinksScreen } from '../screens/Onboarding/ClientSocialLinksScreen';
-import { BusinessPhotosScreen } from '../screens/Onboarding/BusinessPhotosScreen';
+import { PersonalBioScreen } from "../screens/Onboarding/PersonalBioScreen";
+import { BusinessBasicBioScreen } from "../screens/Onboarding/BusinessBasicBioScreen";
+import { ClientLocationScreen } from "../screens/Onboarding/ClientLocationScreen";
+import { BusinessBioScreen } from "../screens/Onboarding/BusinessBioScreen";
+import { BusinessCategoryScreen } from "../screens/Onboarding/BusinessCategoryScreen";
+import { ClientSocialLinksScreen } from "../screens/Onboarding/ClientSocialLinksScreen";
+import { BusinessPhotosScreen } from "../screens/Onboarding/BusinessPhotosScreen";
 import { useOnboardingStore } from "../store/onboardingStore";
 import { theme } from "../theme";
 import { RootStackParamList } from "./types";
@@ -42,6 +42,11 @@ import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
 import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
 import { ProposalScreen } from "../screens/OnboardingOfApplyEvent/ProposalScreen";
 import { SubmitProposalScreen } from "../screens/OnboardingOfApplyEvent/SubmitProposalScreen";
+import { CreateEventScreen } from "../screens/CreateEvent/CreateEventScreen";
+import { TimeDateScreen } from "../screens/CreateEvent/TimeDateScreen";
+import { EventLocationScreen } from "../screens/CreateEvent/EventLocationScreen";
+import { EventBudgetScreen } from "../screens/CreateEvent/EventBudgetScreen";
+import { PostEventScreen } from "../screens/CreateEvent/PostEventScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -73,13 +78,13 @@ const progressFor = (screen: keyof RootStackParamList) =>
  * screen gets built, same as ARTIST_STEPS above.
  */
 const CLIENT_STEPS: (keyof RootStackParamList)[] = [
-  'PersonalBio',
-  'BusinessBasicBio',
-  'ClientLocation',
-  'BusinessBio',
-  'BusinessCategory',
-  'ClientSocialLinks',
-  'BusinessPhotos',
+  "PersonalBio",
+  "BusinessBasicBio",
+  "ClientLocation",
+  "BusinessBio",
+  "BusinessCategory",
+  "ClientSocialLinks",
+  "BusinessPhotos",
 ];
 const clientProgressFor = (screen: keyof RootStackParamList) =>
   (CLIENT_STEPS.indexOf(screen) + 1) / CLIENT_STEPS.length;
@@ -162,7 +167,7 @@ const OTPRoute = () => {
           navigation.navigate("PersonalBio");
           return;
         }
-        if (primaryIntent === 'artist') {
+        if (primaryIntent === "artist") {
           navigation.navigate("BasicBio");
           return;
         }
@@ -170,7 +175,7 @@ const OTPRoute = () => {
         // (e.g. this screen reached directly during testing). Don't
         // silently drop into MainTabs; send them back to pick a role
         // instead of guessing.
-        navigation.navigate('RoleSelection');
+        navigation.navigate("RoleSelection");
       }}
     />
   );
@@ -180,9 +185,9 @@ const PersonalBioRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <PersonalBioScreen
-      progress={clientProgressFor('PersonalBio')}
+      progress={clientProgressFor("PersonalBio")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('BusinessBasicBio')}
+      onContinue={() => navigation.navigate("BusinessBasicBio")}
     />
   );
 };
@@ -191,10 +196,10 @@ const BusinessBasicBioRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <BusinessBasicBioScreen
-      progress={clientProgressFor('BusinessBasicBio')}
+      progress={clientProgressFor("BusinessBasicBio")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('ClientLocation')}
-      onSkip={() => navigation.navigate('ClientLocation')}
+      onContinue={() => navigation.navigate("ClientLocation")}
+      onSkip={() => navigation.navigate("ClientLocation")}
     />
   );
 };
@@ -203,9 +208,9 @@ const ClientLocationRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <ClientLocationScreen
-      progress={clientProgressFor('ClientLocation')}
+      progress={clientProgressFor("ClientLocation")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('BusinessBio')}
+      onContinue={() => navigation.navigate("BusinessBio")}
     />
   );
 };
@@ -214,10 +219,10 @@ const BusinessBioRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <BusinessBioScreen
-      progress={clientProgressFor('BusinessBio')}
+      progress={clientProgressFor("BusinessBio")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('BusinessCategory')}
-      onSkip={() => navigation.navigate('BusinessCategory')}
+      onContinue={() => navigation.navigate("BusinessCategory")}
+      onSkip={() => navigation.navigate("BusinessCategory")}
     />
   );
 };
@@ -226,10 +231,10 @@ const BusinessCategoryRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <BusinessCategoryScreen
-      progress={clientProgressFor('BusinessCategory')}
+      progress={clientProgressFor("BusinessCategory")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('ClientSocialLinks')}
-      onSkip={() => navigation.navigate('ClientSocialLinks')}
+      onContinue={() => navigation.navigate("ClientSocialLinks")}
+      onSkip={() => navigation.navigate("ClientSocialLinks")}
     />
   );
 };
@@ -238,10 +243,10 @@ const ClientSocialLinksRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <ClientSocialLinksScreen
-      progress={clientProgressFor('ClientSocialLinks')}
+      progress={clientProgressFor("ClientSocialLinks")}
       onBack={() => navigation.goBack()}
-      onContinue={() => navigation.navigate('BusinessPhotos')}
-      onSkip={() => navigation.navigate('BusinessPhotos')}
+      onContinue={() => navigation.navigate("BusinessPhotos")}
+      onSkip={() => navigation.navigate("BusinessPhotos")}
     />
   );
 };
@@ -250,14 +255,14 @@ const BusinessPhotosRoute = () => {
   const navigation = useNavigation<NavProp>();
   return (
     <BusinessPhotosScreen
-      progress={clientProgressFor('BusinessPhotos')}
+      progress={clientProgressFor("BusinessPhotos")}
       onBack={() => navigation.goBack()}
       // Last step of the Client branch — hands off into the main app.
       // TODO: submit `answers` from useOnboardingStore to the real
       // user profile (Appwrite) here before navigating, then reset().
       // Mirrors the same TODO on InterestsRoute for the Artist branch.
-      onContinue={() => navigation.navigate('MainTabs')}
-      onSkip={() => navigation.navigate('MainTabs')}
+      onContinue={() => navigation.navigate("MainTabs")}
+      onSkip={() => navigation.navigate("MainTabs")}
     />
   );
 };
@@ -383,6 +388,82 @@ const EventDetailRoute = () => {
   );
 };
 
+const CreateEventRoute = () => {
+  const navigation = useNavigation<NavProp>();
+
+  return (
+    <CreateEventScreen
+      onBack={() => navigation.goBack()}
+      onContinue={(title, description) =>
+        navigation.navigate("TimeDate", { title, description })
+      }
+    />
+  );
+};
+
+const TimeDateRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "TimeDate">>();
+
+  return (
+    <TimeDateScreen
+      onBack={() => navigation.goBack()}
+      onContinue={(date, time) =>
+        navigation.navigate("EventLocation", {
+          ...route.params,
+          date,
+          time,
+        })
+      }
+    />
+  );
+};
+
+const EventLocationRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "EventLocation">>();
+
+  return (
+    <EventLocationScreen
+      onBack={() => navigation.goBack()}
+      onContinue={(location, addressDetails) =>
+        navigation.navigate("EventBudget", {
+          ...route.params,
+          location,
+          addressDetails,
+        })
+      }
+    />
+  );
+};
+
+const EventBudgetRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "EventBudget">>();
+
+  return (
+    <EventBudgetScreen
+      onBack={() => navigation.goBack()}
+      onContinue={(budget) =>
+        navigation.navigate("PostEvent", { ...route.params, budget })
+      }
+    />
+  );
+};
+
+const PostEventRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "PostEvent">>();
+
+  return (
+    <PostEventScreen
+      {...route.params}
+      onBack={() => navigation.goBack()}
+      onContinue={() => navigation.navigate("MainTabs")}
+    />
+  );
+};
+
 const UserDetailRoute = () => {
   const navigation = useNavigation<NavProp>();
   const route = useRoute<RouteProp<RootStackParamList, "UserDetail">>();
@@ -491,11 +572,20 @@ export const RootNavigator = () => {
         <Stack.Screen name="Experience" component={ExperienceRoute} />
         <Stack.Screen name="Interests" component={InterestsRoute} />
         <Stack.Screen name="PersonalBio" component={PersonalBioRoute} />
-        <Stack.Screen name="BusinessBasicBio" component={BusinessBasicBioRoute} />
+        <Stack.Screen
+          name="BusinessBasicBio"
+          component={BusinessBasicBioRoute}
+        />
         <Stack.Screen name="ClientLocation" component={ClientLocationRoute} />
         <Stack.Screen name="BusinessBio" component={BusinessBioRoute} />
-        <Stack.Screen name="BusinessCategory" component={BusinessCategoryRoute} />
-        <Stack.Screen name="ClientSocialLinks" component={ClientSocialLinksRoute} />
+        <Stack.Screen
+          name="BusinessCategory"
+          component={BusinessCategoryRoute}
+        />
+        <Stack.Screen
+          name="ClientSocialLinks"
+          component={ClientSocialLinksRoute}
+        />
         <Stack.Screen name="BusinessPhotos" component={BusinessPhotosRoute} />
         <Stack.Screen name="MainTabs" component={MainTabNavigator} />
         <Stack.Screen
@@ -504,6 +594,11 @@ export const RootNavigator = () => {
           options={{ headerShown: true, title: "Artwork" }}
         />
         <Stack.Screen name="EventDetail" component={EventDetailRoute} />
+        <Stack.Screen name="CreateEvent" component={CreateEventRoute} />
+        <Stack.Screen name="TimeDate" component={TimeDateRoute} />
+        <Stack.Screen name="EventLocation" component={EventLocationRoute} />
+        <Stack.Screen name="EventBudget" component={EventBudgetRoute} />
+        <Stack.Screen name="PostEvent" component={PostEventRoute} />
         <Stack.Screen name="UserDetail" component={UserDetailRoute} />
         <Stack.Screen name="ApplyonEvent" component={ApplyEventRoute} />
         <Stack.Screen name="NegotiatePrice" component={NegotiatePriceRoute} />

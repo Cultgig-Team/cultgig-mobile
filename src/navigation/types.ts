@@ -31,6 +31,31 @@ export type RootStackParamList = {
   ClientSocialLinks: undefined;
   BusinessPhotos: undefined;
   MainTabs: undefined;
+  CreateEvent: undefined;
+  TimeDate: { title: string; description: string };
+  EventLocation: {
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+  };
+  EventBudget: {
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+    addressDetails: string;
+  };
+  PostEvent: {
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+    addressDetails: string;
+    budget: string;
+  };
   ArtworkDetail: { artworkId: string };
   EventDetail: { eventId: number };
   UserDetail: { user: User };
