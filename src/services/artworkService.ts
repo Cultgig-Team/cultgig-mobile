@@ -1,4 +1,4 @@
-import { apiClient } from './apiClient';
+import { apiClient } from "./apiClient";
 
 export interface Artwork {
   id: string;
@@ -16,7 +16,7 @@ export interface Artwork {
  */
 export const artworkService = {
   getFeed: async (): Promise<Artwork[]> => {
-    const { data } = await apiClient.get('/artworks/feed');
+    const { data } = await apiClient.get("/artworks/feed");
     return data;
   },
 
