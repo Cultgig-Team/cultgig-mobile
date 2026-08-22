@@ -1,9 +1,9 @@
-import React from 'react';
-import { Pressable, ActivityIndicator, StyleSheet } from 'react-native';
-import { Text } from '../Text/Text';
-import { theme } from '../../../theme';
-import { buttonStyles, sizeStyles } from './Button.styles';
-import { ButtonProps } from './Button.types';
+import React from "react";
+import { Pressable, ActivityIndicator, StyleSheet } from "react-native";
+import { Text } from "../Text/Text";
+import { theme } from "../../../theme";
+import { buttonStyles, sizeStyles } from "./Button.styles";
+import { ButtonProps } from "./Button.types";
 
 /**
  * ATOM: Button
@@ -14,13 +14,14 @@ import { ButtonProps } from './Button.types';
  */
 export const Button: React.FC<ButtonProps> = ({
   label,
-  variant = 'primary',
-  size = 'md',
+  variant = "primary",
+  size = "md",
   fullWidth = false,
   loading = false,
   disabled = false,
+  labelStyle,
   style, // pulled out so it merges into the array below instead of
-         // overwriting it when spread via ...pressableProps
+  // overwriting it when spread via ...pressableProps
   ...pressableProps
 }) => {
   const textColorStyle = {
@@ -43,20 +44,24 @@ export const Button: React.FC<ButtonProps> = ({
         buttonStyles[variant],
         sizeStyles[size],
         fullWidth && buttonStyles.fullWidth,
-        variant === 'primary' && isDisabled && buttonStyles.primaryDisabled,
-        variant !== 'primary' && isDisabled && buttonStyles.disabled,
+        variant === "primary" && isDisabled && buttonStyles.primaryDisabled,
+        variant !== "primary" && isDisabled && buttonStyles.disabled,
         pressed && !isDisabled && styles.pressed,
         // caller-provided style (e.g. LoginScreen's marginTop) is
         // appended last so it ADDS to the computed style, never replaces it
-        typeof style === 'function' ? style({ pressed }) : style,
+        typeof style === "function" ? style({ pressed }) : style,
       ]}
-      >
+    >
       {loading ? (
         <ActivityIndicator
-          color={variant === 'primary' ? theme.colors.textInverse : theme.colors.primary}
+          color={
+            variant === "primary"
+              ? theme.colors.textInverse
+              : theme.colors.primary
+          }
         />
       ) : (
-        <Text variant="button" style={textColorStyle}>
+        <Text variant="button" style={[textColorStyle, labelStyle]}>
           {label}
         </Text>
       )}

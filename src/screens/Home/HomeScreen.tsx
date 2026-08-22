@@ -7,18 +7,18 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import {
-  Bell,
-  FileText,
-  FileCheck,
-  Star,
-  Eye,
-} from "lucide-react-native";
+import { Bell, FileText, FileCheck, Star, Eye } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Text } from "../../components/atoms/Text";
-import { useArtworkFeed, usePopularEvents } from "../../hooks/useArtworks";
+import { usePopularEvents } from "../../hooks/useArtworks";
+import { useOnboardingStore } from "../../store/onboardingStore";
 import { theme } from "../../theme";
 import EventCard from "@/components/templates/EventCard/EventCard";
+import { Input } from "../../components/atoms/Input/";
+import { Button } from "../../components";
+import { RootStackParamList } from "../../navigation/types";
 /**
  * SCREEN: Home
  * -------------------------------------------------------
@@ -31,7 +31,38 @@ import EventCard from "@/components/templates/EventCard/EventCard";
 // --- DUMMY DATA ---
 const AVATAR_URL = "https://randomuser.me/api/portraits/men/32.jpg";
 
-// --- REUSABLE COMPONENTS ---
+const CATEGORIES: { key: string; label: string; image: number }[] = [
+  {
+    key: "photographer",
+    label: "Photographer",
+    image: require("../../../assets/onboarding/categories/Photographer.png"),
+  },
+  {
+    key: "dancer",
+    label: "Dancer",
+    image: require("../../../assets/onboarding/categories/Dancer.png"),
+  },
+  {
+    key: "guitarist",
+    label: "Guitarist",
+    image: require("../../../assets/onboarding/categories/Guitarist.png"),
+  },
+  {
+    key: "painter",
+    label: "Painter",
+    image: require("../../../assets/onboarding/categories/Painter.png"),
+  },
+  {
+    key: "comedian",
+    label: "Comedian",
+    image: require("../../../assets/onboarding/categories/Comedian.png"),
+  },
+  {
+    key: "videographer",
+    label: "Videographer",
+    image: require("../../../assets/onboarding/categories/Videographer.png"),
+  },
+];
 
 // 1. Activity Card Component
 const ActivityCard = ({
@@ -54,20 +85,83 @@ const ActivityCard = ({
   </View>
 );
 
-
 export const HomeScreen = () => {
-  const {
-    data: artworks,
-    isLoading: artworksLoading,
-    error: artworksError,
-  } = useArtworkFeed();
-
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
+  const role = primaryIntent ?? "artist";
   const {
     data: popularEvents,
     isLoading: eventsLoading,
     error: eventsError,
   } = usePopularEvents();
+  // home screen for client
+  if (role === "client") {
+    return (
+      <SafeAreaView edges={["top"]}>
+        {/* Top Header */}
+        <View style={styles.topHeader}>
+          <TouchableOpacity style={styles.bellButton}>
+            <Text variant="h1" color="primary">
+              Cultgig
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={{ uri: AVATAR_URL }} style={styles.avatar} />
+          </TouchableOpacity>
+        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* post event card  */}
+          <View style={styles.scrollContainer}>
+            <Input
+              placeholder="Search for artists, skills, generes.."
+              style={{
+                paddingVertical: 16.5,
+                paddingHorizontal: 12,
+                marginBottom: 20,
+                borderRadius: 12,
+              }}
+            />
+            <View style={styles.clientHero}>
+              <Text variant="h3" color="background">
+                Need an artist for your event?
+              </Text>
+              <Text color="background" variant="bodySmall">
+                Post what you're looking for and the directly to you — no
+                scrolling required.
+              </Text>
+              <Button
+                label="Post a Event →"
+                variant="secondary"
+                style={styles.postEventButton}
+                labelStyle={styles.postEventLabel}
+                onPress={() => navigation.navigate("CreateEvent")}
+              />
+            </View>
+          </View>
+          {/* category */}
+          <View style={styles.scrollContainer}>
+            <Text variant="h2" style={{ marginVertical: 24 }}>
+              Book artists in all categories
+            </Text>
+            <View style={styles.grid}>
+              {CATEGORIES.map((category) => (
+                <View key={category.key} style={styles.categoryItem}>
+                  <Image source={category.image} style={styles.categoryImage} />
+                  <Text variant="bodySmall" style={styles.categoryLabel}>
+                    {category.label}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
 
+          {/* how cultgig work */}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+  // home screen for artrist
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       {/* Top Header */}
@@ -124,6 +218,41 @@ export const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  clientHero: {
+    backgroundColor: theme.colors.primary,
+    color: theme.colors.background,
+    gap: 12,
+    borderColor: theme.colors.border,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  postEventButton: {
+    width: 135,
+    height: 44,
+    borderRadius: 12,
+  },
+  postEventLabel: {
+    fontSize: 14,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    rowGap: theme.spacing.md,
+  },
+  categoryItem: {
+    width: "30%",
+  },
+  categoryImage: {
+    width: "100%",
+    height: 116,
+    borderRadius: 12,
+  },
+  categoryLabel: {
+    textAlign: "center",
+    paddingTop: 8,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -156,7 +285,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     marginTop: 20,
     marginBottom: 16,
-    paddingBottom:16,
+    paddingBottom: 16,
   },
   sectionTitleSecondary: {
     fontSize: 22,
@@ -164,8 +293,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     marginTop: 24,
     marginBottom: 16,
-    paddingBottom:15,
-
+    paddingBottom: 15,
   },
   activityGrid: {
     flexDirection: "row",
