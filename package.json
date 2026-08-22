@@ -41,6 +41,7 @@
     "@types/react": "~19.2.2",
     "babel-plugin-module-resolver": "^5.0.3",
     "babel-preset-expo": "^57.0.5",
+    "react-native-svg-transformer": "^1.5.3",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3"
   },
