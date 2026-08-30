@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home/HomeScreen";
 import { ProfileScreen } from "../screens/Profile/ProfileScreen";
+import { SearchScreen } from "../screens/search/SearchScreen";
 import { theme } from "../theme";
 import { MainTabParamList } from "./types";
 
@@ -21,6 +22,7 @@ export const MainTabNavigator = () => {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

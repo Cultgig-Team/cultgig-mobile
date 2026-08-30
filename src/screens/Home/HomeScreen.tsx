@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -14,6 +14,7 @@ import {
   Star,
   Eye,
   Search,
+  X,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -94,8 +95,8 @@ const ActivityCard = ({
 );
 
 export const HomeScreen = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<any>();
+  const [homeSearchQuery, setHomeSearchQuery] = useState("");
   const primaryIntent = useOnboardingStore((state) => state.primaryIntent);
   const role = primaryIntent ?? "artist";
   const {
@@ -103,10 +104,19 @@ export const HomeScreen = () => {
     isLoading: eventsLoading,
     error: eventsError,
   } = usePopularEvents();
+
+  const handleSearchSubmit = () => {
+    if (homeSearchQuery.trim()) {
+      navigation.navigate("Search", { query: homeSearchQuery.trim() });
+    } else {
+      navigation.navigate("Search");
+    }
+  };
+
   // home screen for client
   if (role === "client") {
     return (
-      <SafeAreaView edges={["top", "bottom"]}>
+      <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
         {/* Top Header */}
         <View style={styles.topHeader}>
           <TouchableOpacity style={styles.bellButton}>
@@ -119,14 +129,29 @@ export const HomeScreen = () => {
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* post event card  */}
+          {/* search & post event card */}
           <View style={styles.scrollContainer}>
             <View style={styles.searchInputWrapper}>
-              <Search size={20} color={theme.colors.textSecondary} />
+              <TouchableOpacity onPress={handleSearchSubmit} activeOpacity={0.7}>
+                <Search size={20} color={theme.colors.textSecondary} />
+              </TouchableOpacity>
               <Input
-                placeholder="Search for artists, skills, generes.."
+                placeholder="Search for artists, skills, genres.."
                 style={styles.searchInput}
+                value={homeSearchQuery}
+                onChangeText={setHomeSearchQuery}
+                onSubmitEditing={handleSearchSubmit}
+                returnKeyType="search"
               />
+              {homeSearchQuery.length > 0 && (
+                <TouchableOpacity
+                  onPress={() => setHomeSearchQuery("")}
+                  style={styles.clearButton}
+                  activeOpacity={0.7}
+                >
+                  <X size={18} color={theme.colors.textSecondary} />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.clientHero}>
               <Text variant="h3" color="background">
@@ -145,19 +170,27 @@ export const HomeScreen = () => {
               />
             </View>
           </View>
+
           {/* category */}
           <View style={styles.scrollContainer}>
-            <Text variant="h2" style={{ marginVertical: 24 }}>
-              Book artists in all categories
+            <Text variant="h2" style={{ marginVertical: 20 }}>
+              Top Artist categories
             </Text>
             <View style={styles.grid}>
               {CATEGORIES.map((category) => (
-                <View key={category.key} style={styles.categoryItem}>
+                <TouchableOpacity
+                  key={category.key}
+                  style={styles.categoryItem}
+                  onPress={() =>
+                    navigation.navigate("Search", { category: category.key })
+                  }
+                  activeOpacity={0.8}
+                >
                   <Image source={category.image} style={styles.categoryImage} />
                   <Text variant="bodySmall" style={styles.categoryLabel}>
                     {category.label}
                   </Text>
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           </View>
@@ -265,6 +298,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16.5,
     paddingHorizontal: 0,
   },
+  clearButton: {
+    padding: 4,
+  },
   postEventButton: {
     width: 135,
     height: 44,
@@ -282,6 +318,8 @@ const styles = StyleSheet.create({
   },
   categoryItem: {
     width: "30%",
+    borderRadius: 12,
+    overflow: "hidden",
   },
   categoryImage: {
     width: "100%",
@@ -291,6 +329,7 @@ const styles = StyleSheet.create({
   categoryLabel: {
     textAlign: "center",
     paddingTop: 8,
+    paddingBottom: 4,
   },
   container: {
     flex: 1,

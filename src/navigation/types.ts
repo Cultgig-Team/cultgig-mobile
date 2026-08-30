@@ -72,6 +72,7 @@ export type RootStackParamList = {
 
 export type MainTabParamList = {
   Home: undefined;
+  Search: { category?: string; query?: string } | undefined;
   Profile: undefined;
 };
 
