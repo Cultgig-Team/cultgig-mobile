@@ -79,7 +79,7 @@ export const SearchScreen = () => {
 
   const [searchText, setSearchText] = useState(route.params?.query ?? "");
   const [activeCategory, setActiveCategory] = useState(
-    route.params?.category ?? ""
+    route.params?.category ?? "",
   );
 
   // Sync state when route params change (e.g. from HomeScreen)
@@ -177,9 +177,7 @@ export const SearchScreen = () => {
       {/* Top header */}
       <View style={styles.topHeader}>
         <TouchableOpacity style={styles.bellButton}>
-          <Text variant="h1" color="primary">
-            Search
-          </Text>
+          <Text variant="h1">Search</Text>
         </TouchableOpacity>
         <TouchableOpacity>
           <Image source={{ uri: AVATAR_URL }} style={styles.avatar} />
@@ -219,6 +217,7 @@ export const SearchScreen = () => {
           >
             <ListFilter
               size={32}
+              strokeWidth={2}
               color={
                 activeFilterCount > 0
                   ? theme.colors.textInverse
@@ -452,7 +451,7 @@ export const SearchScreen = () => {
                           activeOpacity={0.7}
                         >
                           <Text
-                            variant="bodySmall"
+                            variant="body"
                             style={[
                               styles.filterItemLabel,
                               isSelected && styles.filterItemLabelSelected,
@@ -488,16 +487,14 @@ export const SearchScreen = () => {
                   <View style={styles.priceRow}>
                     <View style={styles.priceCol}>
                       <Text
-                        variant="bodySmall"
-                        color="textSecondary"
+                        variant="bodySmallBold"
                         style={styles.priceSubLabel}
                       >
                         Min
                       </Text>
                       <View style={styles.priceInputBox}>
                         <Text
-                          variant="bodySmall"
-                          color="textSecondary"
+                          variant="bodySmallBold"
                           style={styles.currencyPrefix}
                         >
                           INR₹
@@ -517,16 +514,14 @@ export const SearchScreen = () => {
 
                     <View style={styles.priceCol}>
                       <Text
-                        variant="bodySmall"
-                        color="textSecondary"
+                        variant="bodySmallBold"
                         style={styles.priceSubLabel}
                       >
                         Max
                       </Text>
                       <View style={styles.priceInputBox}>
                         <Text
-                          variant="bodySmall"
-                          color="textSecondary"
+                          variant="bodySmallBold"
                           style={styles.currencyPrefix}
                         >
                           INR₹
@@ -646,6 +641,8 @@ const styles = StyleSheet.create({
   searchHeaderContainer: {
     paddingHorizontal: 20,
     paddingTop: 4,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border,
   },
   scrollContent: {
     paddingHorizontal: 20,
@@ -655,7 +652,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   searchInputWrapper: {
     flex: 1,
@@ -770,7 +767,7 @@ const styles = StyleSheet.create({
   },
   resultCount: {
     marginBottom: 12,
-    marginTop: 4,
+    marginTop: 16,
   },
   emptyContainer: {
     alignItems: "center",
@@ -844,8 +841,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   filterItemLabel: {
-    fontSize: 14,
-    fontWeight: "500",
+    fontSize: 16,
+    fontWeight: 500,
     color: theme.colors.textPrimary,
   },
   filterItemLabelSelected: {
@@ -879,7 +876,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   priceSubLabel: {
-    fontSize: 12,
+    fontSize: 14,
+    marginBottom: 12,
   },
   priceInputBox: {
     flexDirection: "row",
@@ -896,14 +894,14 @@ const styles = StyleSheet.create({
   },
   priceTextInput: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 16,
     fontSize: 14,
     color: theme.colors.textPrimary,
   },
   priceHyphen: {
     alignSelf: "flex-end",
     marginBottom: 12,
-    color: theme.colors.textSecondary,
+    // color: theme.colors.textSecondary,
     fontWeight: "700",
   },
 
@@ -917,6 +915,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   applyButton: {
-    flex: 2,
+    // flex: 2,
+    borderRadius: 12,
+    paddingVertical: 15,
+    width: 166,
   },
 });

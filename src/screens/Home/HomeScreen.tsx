@@ -132,7 +132,10 @@ export const HomeScreen = () => {
           {/* search & post event card */}
           <View style={styles.scrollContainer}>
             <View style={styles.searchInputWrapper}>
-              <TouchableOpacity onPress={handleSearchSubmit} activeOpacity={0.7}>
+              <TouchableOpacity
+                onPress={handleSearchSubmit}
+                activeOpacity={0.7}
+              >
                 <Search size={20} color={theme.colors.textSecondary} />
               </TouchableOpacity>
               <Input
@@ -174,7 +177,7 @@ export const HomeScreen = () => {
           {/* category */}
           <View style={styles.scrollContainer}>
             <Text variant="h2" style={{ marginVertical: 20 }}>
-              Top Artist categories
+              Book artists in all categories
             </Text>
             <View style={styles.grid}>
               {CATEGORIES.map((category) => (
