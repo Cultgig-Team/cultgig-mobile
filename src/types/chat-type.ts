@@ -45,6 +45,18 @@ export interface SendMessagePayload {
   linkMetadata?: Record<string, any> | string | null;
 }
 
+export interface sendDocumentPayload {
+  conversationId: string;
+  senderId: string;
+  receiverId: string;
+  file: {
+    uri: string;
+    type: string;
+    name: string;
+    size: number;
+  };
+  mediaType: "image" | "file";
+}
 export interface ChatRoomInterface {
   conversationId: string;
   chatParticipant: UserProfileDocument | undefined;

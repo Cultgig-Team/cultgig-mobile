@@ -6,6 +6,7 @@ import {
   Query,
   storage,
 } from "@/services/appwrite";
+import * as FileSystem from "expo-file-system/legacy";
 import {
   ConversationDocument,
   MessageDocument,
@@ -81,7 +82,6 @@ export function chatUtilityFunc() {
       APPWRITE_CONFIG.CONVERSATIONS_COLLECTION_ID,
       newChat.$id,
     );
-    console.log("populatedChat ", populatedChat);
     return populatedChat;
   }
 
@@ -156,18 +156,37 @@ export function chatUtilityFunc() {
     name: string;
     size: number;
   }) {
-    const uploadedFile = await storage.createFile(
-      APPWRITE_CONFIG.STORAGE_BUCKET_ID,
-      ID.unique(),
-      file,
-    );
-    return uploadedFile.$id;
+    const endpoint = `${process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID}/files`;
+
+    try {
+      const uploadedResponse = await FileSystem.uploadAsync(
+        endpoint,
+        file.uri,
+        {
+          headers: {
+            "X-Appwrite-Project": process.env
+              .EXPO_PUBLIC_APPWRITE_PROJECT_ID as string,
+          },
+          httpMethod: "POST",
+          uploadType: 1,
+          fieldName: "file",
+          parameters: {
+            fileId: "unique()",
+          },
+        },
+      );
+      const res = JSON.parse(uploadedResponse.body);
+      if (uploadedResponse.status >= 400)
+        throw new Error(res.message || "Appwrite API Error");
+      return res.$id;
+    } catch (error) {
+      console.error("error in uploading ", error);
+      throw error;
+    }
   }
 
   function getFilePreviewUrl(fileId: string): string {
-    return storage
-      .getFilePreview(APPWRITE_CONFIG.STORAGE_BUCKET_ID, fileId)
-      .toString();
+    return `${process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${APPWRITE_CONFIG.STORAGE_BUCKET_ID}/files/${fileId}/view?project=${process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID}`;
   }
 
   function getFileDownloadUrl(fileId: string) {

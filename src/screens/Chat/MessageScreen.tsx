@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RenderMessage } from "./RenderMessage";
+import { useAttachmentsUploadToChat } from "@/hooks/useOpenAttachments";
 
 type ChatRoomParams = {
   ChatRoom: ChatRoomInterface;
@@ -25,13 +26,14 @@ export const MessageScreen = () => {
   const route = useRoute<RouteProp<ChatRoomParams, "ChatRoom">>();
   const navigate = useNavigation();
   const { conversationId, chatParticipant, myUserId } = route.params;
-  const {
-    data: messages = [],
-    isLoading,
-    isFetching,
-  } = useMessages(conversationId);
+  const { data: messages = [], isLoading } = useMessages(conversationId);
   const [text, setText] = useState("");
   const { mutate: sendMsg, isPending: isSending } = useSendMessages();
+  const { openAttachments, isUploading } = useAttachmentsUploadToChat(
+    conversationId,
+    myUserId,
+    chatParticipant,
+  );
   function handleSendMsg() {
     if (!text.trim() || !chatParticipant) return;
     sendMsg({
@@ -92,8 +94,16 @@ export const MessageScreen = () => {
 
         {/* ⌨️ Input Area */}
         <View className="flex-row items-center px-4 py-3 border-t border-neutral-100 bg-white">
-          <Pressable className="p-2 mr-2">
-            <Plus size={24} color="#171717" />
+          <Pressable
+            className="p-2 mr-2"
+            onPress={openAttachments}
+            disabled={isUploading}
+          >
+            {isUploading ? (
+              <ActivityIndicator size="large" color="#6B2D5C" />
+            ) : (
+              <Plus size={24} color="#171717" />
+            )}
           </Pressable>
           <View className="flex-1 bg-neutral-100 rounded-full px-4 py-2.5 flex-row items-center">
             <TextInput

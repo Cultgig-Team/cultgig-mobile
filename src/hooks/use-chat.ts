@@ -1,7 +1,10 @@
 import { chatUtilityFunc } from "@/services/chat.service";
-import { MessageDocument, SendMessagePayload } from "@/types/chat-type";
+import {
+  MessageDocument,
+  sendDocumentPayload,
+  SendMessagePayload,
+} from "@/types/chat-type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Variable } from "lucide-react-native";
 
 const {
   getConversation,
@@ -9,6 +12,7 @@ const {
   getMessages,
   sendMessage,
   getUserProfile,
+  uploadFile,
 } = chatUtilityFunc();
 
 export function useGetConvesation(userId: string) {
@@ -47,7 +51,6 @@ export function useMessages(conversationId: string) {
     enabled: !!conversationId,
     // Add this to see what's actually happening! 👇
     throwOnError: (error) => {
-      console.log("Appwrite Error:", error);
       return false;
     },
   });
@@ -84,7 +87,6 @@ export function useSendMessages() {
         $sequence: "",
         $collectionId: "",
       };
-
       queryClient.setQueryData<MessageDocument[]>(queryKey, (old = []) => [
         createMessage,
         ...old,
@@ -121,5 +123,44 @@ export function useGetMyProfiileDetails(userId: string) {
     queryFn: () => getUserProfile(userId),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useUploadFile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      conversationId,
+      senderId,
+      receiverId,
+      file,
+      mediaType,
+    }: sendDocumentPayload) => {
+      const fileId = await uploadFile(file);
+      const msg = await sendMessage({
+        conversationId,
+        senderId,
+        receiverId,
+        fileId,
+        fileName: file.name,
+        fileSize: file.size,
+        type: mediaType,
+        text: file.type === "image" ? "Image" : `${file.name}`,
+        mimeType: file.type,
+      });
+      return msg;
+    },
+    onError: (error) => {
+      console.error("Appwrite Upload Failed 🚨:", error);
+    },
+    onSuccess: (_, variable) => {
+      queryClient.invalidateQueries({
+        queryKey: ["messages", variable.conversationId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["get-conversation"],
+      });
+    },
   });
 }
