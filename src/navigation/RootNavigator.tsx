@@ -47,6 +47,7 @@ import { TimeDateScreen } from "../screens/CreateEvent/TimeDateScreen";
 import { EventLocationScreen } from "../screens/CreateEvent/EventLocationScreen";
 import { EventBudgetScreen } from "../screens/CreateEvent/EventBudgetScreen";
 import { PostEventScreen } from "../screens/CreateEvent/PostEventScreen";
+import { MessageScreen } from "@/screens/Chat/MessageScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -610,6 +611,11 @@ export const RootNavigator = () => {
         <Stack.Screen name="NegotiatePrice" component={NegotiatePriceRoute} />
         <Stack.Screen name="Proposal" component={ProposalRoute} />
         <Stack.Screen name="SubmitProposal" component={SubmitProposalRoute} />
+        <Stack.Screen
+          name="ChatRoom"
+          component={MessageScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}
