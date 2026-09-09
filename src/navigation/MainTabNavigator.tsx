@@ -3,15 +3,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home/HomeScreen";
 import ChatScreen from "../screens/Chat/ChatScreen";
 import CalendarScreen from "@/screens/ScheduleEvent/CalendarSceen";
-import SearchScreen from "@/screens/Search/SearchScreen";
+import { SearchScreen } from "@/screens/Search/SearchScreen";
 import { theme } from "../theme";
 import { MainTabParamList } from "./types";
 import CultgigNavCalendarIcon from "../../assets/icons/cultgig-nav-calendar-icon.svg";
 import CultgigNavChatIcon from "../../assets/icons/cultgig-nav-chat-icon.svg";
 import CultgigNavHomeIcon from "../../assets/icons/cultgig-nav-home-icon.svg";
 import CultgigNavSearchIcon from "../../assets/icons/cultgig-nav-search-icon.svg";
+import CultgigNavUserIcon from "../../assets/icons/cultgig-nav-user-icon.svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SVG } from "@/components/common/SVG";
+import { ProfileScreen } from "@/screens/Profile/ProfileScreen";
 
 interface TabIconsInterface {
   focused: boolean;
@@ -41,6 +43,11 @@ const TAB_ROUTES: Record<
     component: ChatScreen,
     icon: CultgigNavChatIcon,
     label: "Message",
+  },
+  Profile: {
+    component: ProfileScreen,
+    icon: CultgigNavUserIcon,
+    label: "profile",
   },
 };
 

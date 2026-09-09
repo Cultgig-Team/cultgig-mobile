@@ -1,5 +1,6 @@
 import { apiClient } from "./apiClient";
 import { popularEvents } from "assets/dummyData/popular-events";
+import { artistProfiles } from "assets/dummyData/artist-profiles";
 
 export interface Artwork {
   id: string;
@@ -35,6 +36,21 @@ export interface User {
   profileImage: string;
 }
 
+export interface ArtistProfile {
+  id: number;
+  name: string;
+  gender: string;
+  profileImgUrl: string;
+  location: string;
+  category: string;
+  bio: string;
+  socialLinks: {
+    instagram?: string;
+    facebook?: string;
+  };
+  createdAt: string;
+}
+
 /**
  * Plain async functions — no React here. These get wrapped
  * by React Query hooks (see src/hooks/useArtworks.ts) which
@@ -61,3 +77,58 @@ export const artworkService = {
     return popularEvents.find((event) => event.id === id);
   },
 };
+
+export interface ArtistSearchParams {
+  query?: string;
+  category?: string;
+  location?: string;
+  gender?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+/**
+ * Artist profile service — currently backed by local dummy data.
+ * Swap getArtists / searchArtists to real API calls when the endpoint is ready.
+ */
+export const artistProfileService = {
+  /** Returns all artists, optionally filtered by search query, category, location, gender */
+  searchArtists: async (params: ArtistSearchParams): Promise<ArtistProfile[]> => {
+    // Simulate network latency for realistic loading state
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    let results = [...artistProfiles] as ArtistProfile[];
+
+    if (params.category) {
+      results = results.filter((a) =>
+        a.category.toLowerCase().includes(params.category!.toLowerCase()),
+      );
+    }
+
+    if (params.query) {
+      const q = params.query.toLowerCase();
+      results = results.filter(
+        (a) =>
+          a.name.toLowerCase().includes(q) ||
+          a.category.toLowerCase().includes(q) ||
+          a.location.toLowerCase().includes(q),
+      );
+    }
+
+    if (params.location) {
+      const loc = params.location.toLowerCase();
+      results = results.filter((a) =>
+        a.location.toLowerCase().includes(loc),
+      );
+    }
+
+    if (params.gender) {
+      results = results.filter(
+        (a) => a.gender.toLowerCase() === params.gender!.toLowerCase(),
+      );
+    }
+
+    return results;
+  },
+};
+

@@ -56,7 +56,7 @@ export const HowCultgigWorks = () => (
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FAF2F9",
+    backgroundColor: "#FCF7FB",
     borderWidth: 1,
     borderColor: theme.colors.border,
     borderRadius: 16,
