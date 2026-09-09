@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home/HomeScreen";
 import ChatScreen from "../screens/Chat/ChatScreen";
 import CalendarScreen from "@/screens/ScheduleEvent/CalendarSceen";
-import { SearchScreen } from "@/screens/Search/SearchScreen";
+import SearchScreen from "@/screens/Search/SearchScreen";
 import { theme } from "../theme";
 import { MainTabParamList } from "./types";
 import CultgigNavCalendarIcon from "../../assets/icons/cultgig-nav-calendar-icon.svg";
