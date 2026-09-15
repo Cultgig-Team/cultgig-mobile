@@ -35,11 +35,10 @@ export function createChatIfNot() {
       targetUserId: string;
       myUserId: string;
     }) => isChatExistingOrNew(targetUserId, myUserId),
-    onSuccess: (_, populatedChat) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["get-conversation"],
       });
-      return populatedChat;
     },
   });
 }
@@ -49,23 +48,20 @@ export function useMessages(conversationId: string) {
     queryKey: ["messages", conversationId],
     queryFn: () => getMessages(conversationId),
     enabled: !!conversationId,
-    // Add this to see what's actually happening! 👇
-    throwOnError: (error) => {
-      return false;
-    },
+    throwOnError: () => false,
   });
 }
 
-// includes optimistic updates
 export function useSendMessages() {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (payload: SendMessagePayload) => sendMessage(payload),
     onMutate: async (payload: SendMessagePayload) => {
       const queryKey = ["messages", payload.conversationId];
       await queryClient.cancelQueries({ queryKey });
       const previousMessages =
-        queryClient.getQueryData<MessageDocument[]>(queryKey); // for backup
+        queryClient.getQueryData<MessageDocument[]>(queryKey);
       const createMessage: MessageDocument = {
         $id: `temp-${new Date().toISOString()}`,
         conversation_id: payload.conversationId,
@@ -78,31 +74,29 @@ export function useSendMessages() {
         file_size: null,
         mime_type: null,
         link_metadata: null,
-        deleted_for: null,
+        deleted_for: [],
         is_deleted_everyone: false,
         $createdAt: new Date().toISOString(),
         $updatedAt: new Date().toISOString(),
-        $permissions: [],
-        $databaseId: "",
-        $sequence: "",
-        $collectionId: "",
       };
+
       queryClient.setQueryData<MessageDocument[]>(queryKey, (old = []) => [
         createMessage,
         ...old,
       ]);
+
       return { previousMessages, queryKey };
     },
-    onError: (_error, _variables, _context) => {
-      if (_context?.previousMessages)
-        queryClient.setQueryData(_context.queryKey, _context.previousMessages);
+    onError: (_error, _variables, context) => {
+      if (context?.previousMessages)
+        queryClient.setQueryData(context.queryKey, context.previousMessages);
     },
-    onSettled: (_data, _error, _variables) => {
+    onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["messages", _variables.conversationId],
+        queryKey: ["messages", variables.conversationId],
       });
       queryClient.invalidateQueries({
-        queryKey: ["get-conversation", _variables.senderId],
+        queryKey: ["get-conversation", variables.senderId],
       });
     },
     onSuccess: (_, variable) => {
@@ -150,9 +144,6 @@ export function useUploadFile() {
         mimeType: file.type,
       });
       return msg;
-    },
-    onError: (error) => {
-      console.error("Appwrite Upload Failed 🚨:", error);
     },
     onSuccess: (_, variable) => {
       queryClient.invalidateQueries({

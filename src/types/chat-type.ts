@@ -1,14 +1,23 @@
-import { Models } from "react-native-appwrite";
-
 export type MessageType = "text" | "image" | "file" | "link";
-export interface UserProfileDocument extends Models.Document {
+
+export interface AppDocumentShape {
+  $id: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+  $permissions?: string[];
+  $databaseId?: string;
+  $sequence?: string;
+  $collectionId?: string;
+}
+
+export interface UserProfileDocument extends AppDocumentShape {
   name?: string;
   email?: string;
   avatar_url?: string;
   role?: string;
 }
 
-export interface ConversationDocument extends Models.Document {
+export interface ConversationDocument extends AppDocumentShape {
   last_message?: string | null;
   last_message_at?: string | null;
   unread_by?: string[] | null;
@@ -17,7 +26,7 @@ export interface ConversationDocument extends Models.Document {
   participant_ids: string[];
 }
 
-export interface MessageDocument extends Models.Document {
+export interface MessageDocument extends AppDocumentShape {
   conversation_id: string;
   sender_id: string;
   receiver_id: string;
