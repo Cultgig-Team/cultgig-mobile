@@ -37,66 +37,73 @@ export const SubmitProposalScreen: React.FC<SubmitProposalScreenProps> = ({
         </View>
 
         <Text variant="h1" style={styles.title}>
-          Alright ready to post your proposal?
+          Hey, finally review your application
         </Text>
-
+        <Text variant="titleMd" color="textSecondary" style={styles.proposal}>
+          {proposedPrice === budget
+            ? "APPLICATION PRICE"
+            : "YOUR COUNTER OFFER"}
+        </Text>
         <View style={styles.card1}>
-          {/* item 1 */}
-          <View
-            style={[
-              styles.carditem1,
-              proposedPrice === budget && styles.singlePrice,
-            ]}
-          >
-            <Text
-              variant="bodySmallBold"
-              style={proposedPrice === budget && styles.singlePriceLabel}
-            >
-              Business Budget
-            </Text>
-            <Text
-              variant="bodySmallBold"
-              style={[
-                styles.singlePriceText,
-                proposedPrice === budget && styles.singlePriceTextLarge,
-              ]}
-            >
+          <View style={styles.carditem}>
+            <Text variant="bodySmallBold">Business Budget</Text>
+            <Text variant="bodySmallBold" style={styles.singlePriceText}>
               ₹{budget}
             </Text>
           </View>
-          {/* item 2 & difference - only show if proposedPrice !== budget */}
+
+          <View style={styles.carditem}>
+            <View>
+              <Text variant="bodySmallBold">Your proposed price</Text>
+              {proposedPrice === budget && (
+                <Text variant="bodySmallBold" style={styles.badge}>
+                  At business budget
+                </Text>
+              )}
+            </View>
+            <Text variant="bodySmallBold">₹{proposedPrice}</Text>
+          </View>
+
           {proposedPrice !== budget && (
-            <>
-              {/* item 2 */}
-              <View style={styles.carditem}>
-                <Text variant="bodySmallBold">Your proposed price</Text>
-                <Text variant="bodySmallBold">₹{proposedPrice}</Text>
-              </View>
-              {/* difference */}
-              <View style={styles.difference}>
-                <Text
-                  variant="bodySmallBold"
-                  style={{ color: theme.colors.primary }}
-                >
-                  Difference
-                </Text>
-                <Text
-                  variant="bodySmallBold"
-                  style={{ color: theme.colors.primary }}
-                >
-                  +₹{proposedPrice - budget}
+            <View style={styles.difference}>
+              <View>
+                <Text variant="bodySmallBold">Difference</Text>
+                <Text variant="bodySmallBold" style={styles.badge1}>
+                  Awaiting business review
                 </Text>
               </View>
-            </>
+
+              <Text
+                variant="bodySmallBold"
+                style={{ color: theme.colors.primary }}
+              >
+                +₹{proposedPrice - budget}
+              </Text>
+            </View>
           )}
         </View>
-
-        <Text variant="titleMd" style={styles.proposal}>
+        {proposedPrice !== budget && (
+          <View
+            style={{
+              backgroundColor: "#FBF3E7",
+              marginTop: 8,
+              paddingVertical: 10,
+              paddingHorizontal: 16,
+              borderRadius: 12,
+            }}
+          >
+            <Text variant="bodySmallBold" style={{ color: "#7C5C2A" }}>
+              The business hasn't accepted this price yet — they'll review it
+              along with your application.
+            </Text>
+          </View>
+        )}
+        <Text variant="titleMd" color="textSecondary" style={styles.proposal}>
           Your proposal message
         </Text>
         <View style={styles.card}>
           <Text variant="body" style={styles.description}>
-            {proposalDescription}
+            "{proposalDescription}"
           </Text>
         </View>
       </ScrollView>
@@ -120,6 +127,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
+  badge: {
+    backgroundColor: "#1584421A",
+    color: "#158442",
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 100,
+    marginTop: 8,
+  },
+  badge1: {
+    backgroundColor: "#FBF3E7",
+    color: "#7C5C2A",
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 100,
+    marginTop: 8,
+  },
   contentContainer: {
     padding: theme.spacing.md,
     paddingBottom: theme.spacing.xl,
@@ -132,7 +155,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
     borderRadius: theme.radii.lg,
-    // padding: theme.spacing.md,
+    backgroundColor: "#FCF7FB",
   },
   card: {
     borderWidth: 1,
@@ -140,42 +163,15 @@ const styles = StyleSheet.create({
     borderRadius: theme.radii.lg,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.md,
-    backgroundColor: theme.colors.surface,
-  },
-  carditem1: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: theme.colors.border,
-    marginTop: theme.spacing.md,
-    marginRight: theme.spacing.md,
-    marginLeft: theme.spacing.md,
-    paddingBottom: theme.spacing.md,
-  },
-  singlePrice: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: theme.spacing.sm,
-    minHeight: 80,
-  },
-  singlePriceLabel: {
-    color: theme.colors.textSecondary,
+    backgroundColor: "#FCF7FB",
   },
   singlePriceText: {},
-  singlePriceTextLarge: {
-    color: theme.colors.primary,
-    fontSize: theme.fontSize["3xl"],
-    fontWeight: theme.fontWeight.black,
-    lineHeight: theme.lineHeight["3xl"],
-  },
   difference: {
     flexDirection: "row",
     justifyContent: "space-between",
     borderTopWidth: 1,
     borderColor: theme.colors.border,
     padding: theme.spacing.md,
-    backgroundColor: "#FAF2F9",
     borderBottomEndRadius: 12,
     borderBottomLeftRadius: 12,
   },
@@ -187,6 +183,7 @@ const styles = StyleSheet.create({
   description: {
     marginTop: theme.spacing.sm,
     lineHeight: 22,
+    fontStyle: "italic",
   },
   proposal: {
     marginTop: theme.spacing.md,
