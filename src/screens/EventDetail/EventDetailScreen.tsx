@@ -9,16 +9,14 @@ import {
 import {
   MapPin,
   Clock3,
-  CalendarDays,
-  IndianRupee,
-  ChevronLeft,
-  Bookmark,
-  Share2,
-  ChevronRight,
   Calendar,
+  Banknote,
+  ChevronLeft,
+  Share2,
+  HeartIcon,
+  DotIcon,
 } from "lucide-react-native";
 import { RootStackParamList } from "../../navigation/types";
-// import { Button, Text } from "../../components";
 import { Button } from "../../components/atoms/Button";
 import { Text } from "../../components/atoms/Text";
 import { usePopularEventDetail } from "../../hooks/useArtworks";
@@ -42,7 +40,6 @@ const DetailSection: React.FC<{ title: string; children: React.ReactNode }> = ({
       {title}
     </Text>
     {children}
-    <View style={styles.divider} />
   </>
 );
 
@@ -75,52 +72,21 @@ export const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
         <View style={styles.header}>
           <ChevronLeft size={32} strokeWidth={1.5} onPress={onBack} />
           <View style={styles.headerActions}>
-            <Bookmark size={32} strokeWidth={1.5} />
-            <Share2 size={32} strokeWidth={1.5} />
+            <HeartIcon />
+            <Share2 size={24} strokeWidth={1.5} />
           </View>
         </View>
-
-        <Image source={{ uri: event.featureImage }} style={styles.heroImage} />
 
         <Text variant="h2" style={styles.pageTitle}>
           {event.title}
         </Text>
 
-        <View style={styles.infoItemContainer}>
-          <View style={styles.infoItemContent}>
-            <View style={styles.iconPill}>
-              <MapPin
-                size={22}
-                color={theme.colors.primary}
-                strokeWidth={1.8}
-              />
-            </View>
-            <View>
-              <Text variant="titleLg">{event.location.split(",")[0]}</Text>
-              <Text>{event.location.split(",")[1]}</Text>
-            </View>
-          </View>
-          <ChevronRight />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text>Posted 3 days ago </Text>
+          <DotIcon />
+          <Text> {event.user.name}</Text>
         </View>
 
-        <View style={styles.infoItemContainer}>
-          <View style={styles.infoItemContent}>
-            <View style={styles.iconPill}>
-              <Calendar
-                size={22}
-                color={theme.colors.primary}
-                strokeWidth={1.8}
-              />
-            </View>
-            <View>
-              <Text variant="titleLg">
-                Starts at {parseInt(event.createdAt.split("+")[1])} PM
-              </Text>
-              <Text>Mark in your google calendar</Text>
-            </View>
-          </View>
-          <ChevronRight />
-        </View>
         <View style={styles.divider} />
 
         <DetailSection title="About this Event">
@@ -128,40 +94,49 @@ export const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
             {event.eventDescription}
           </Text>
         </DetailSection>
-
-        <DetailSection title="Things to know">
-          <View style={styles.infoItemsStack}>
-            <View style={styles.infoItemSimple}>
-              <MapPin size={18} color={theme.colors.backgroundDark} />
-              <Text variant="body" color="backgroundDark">
-                {event.location}
-              </Text>
-            </View>
-
-            <View style={styles.infoItemSimple}>
-              <CalendarDays size={18} color={theme.colors.backgroundDark} />
-              <Text variant="body" color="backgroundDark">
-                {event.thingsToKnow?.date ?? event.startsAt}
-              </Text>
-            </View>
-
-            <View style={styles.infoItemSimple}>
-              <Clock3 size={18} color={theme.colors.backgroundDark} />
-              <Text variant="body" color="backgroundDark">
-                {event.thingsToKnow?.time ?? event.startsAt}
-              </Text>
-            </View>
-
-            <View style={styles.infoItemSimple}>
-              <IndianRupee size={18} color={theme.colors.backgroundDark} />
-              <Text variant="body" color="backgroundDark">
+        <View style={styles.divider} />
+        <DetailSection title="At a glance">
+          <View style={styles.infoItemSimple}>
+            <Banknote size={24} />
+            <View>
+              <Text variant="titleMd">
                 {event.thingsToKnow?.budget ?? `₹${event.budget}`}
               </Text>
+              <Text>Price fixed</Text>
+            </View>
+          </View>
+          <View style={styles.infoItemsStack}>
+            <View style={styles.infoItemSimple}>
+              <MapPin size={24} color={theme.colors.backgroundDark} />
+              <View>
+                <Text variant="titleMd">{event.location}</Text>
+                <Text>Work in person from the location</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoItemSimple}>
+              <Clock3 size={24} color={theme.colors.backgroundDark} />
+              <View>
+                <Text variant="titleMd">
+                  {event.thingsToKnow?.time ?? event.startsAt}
+                </Text>
+                <Text>Work in person from the location</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoItemSimple}>
+              <Calendar size={24} color={theme.colors.backgroundDark} />
+              <View>
+                <Text variant="titleMd">
+                  {event.thingsToKnow?.date ?? event.startsAt}
+                </Text>
+                <Text>Work in person from the location</Text>
+              </View>
             </View>
           </View>
         </DetailSection>
-
-        <DetailSection title="Organised By">
+        <View style={styles.divider} />
+        <DetailSection title="Host By">
           <View style={styles.organiserInfo}>
             <Image
               source={{ uri: event.user.profileImage }}
@@ -178,20 +153,6 @@ export const EventDetailScreen: React.FC<EventDetailScreenProps> = ({
             </Pressable>
           </View>
         </DetailSection>
-
-        <Text variant="h3" style={styles.sectionTitle}>
-          Gallery
-        </Text>
-        <View style={styles.gallerySection}>
-          <Image
-            source={{ uri: event.featureImage }}
-            style={styles.galleryImage}
-          />
-          <Image
-            source={{ uri: event.featureImage }}
-            style={styles.galleryImage}
-          />
-        </View>
       </ScrollView>
       <View style={styles.divider} />
       <View style={styles.footer}>
@@ -270,8 +231,7 @@ const styles = StyleSheet.create({
   },
   infoItemSimple: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: theme.spacing.sm,
+    gap: 19,
     marginBottom: theme.spacing.sm,
   },
   infoItemsStack: {
