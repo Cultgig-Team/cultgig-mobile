@@ -7,7 +7,13 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Bookmark, MapPin, Clock2, Calendar } from "lucide-react-native";
+import {
+  Bookmark,
+  MapPin,
+  Clock2,
+  Calendar,
+  HeartIcon,
+} from "lucide-react-native";
 import { Text } from "../../atoms/Text";
 import { PopularEvent } from "@/services/artworkService";
 import { RootStackParamList } from "../../../navigation/types";
@@ -34,7 +40,8 @@ function EventCard({ event }: { event: PopularEvent }) {
           <Text>Posted by {event.user?.name}</Text>
         </View>
         <TouchableOpacity>
-          <Bookmark strokeWidth={1.5} />
+          {/* <Bookmark strokeWidth={1.5} /> */}
+          <HeartIcon />
         </TouchableOpacity>
       </View>
 
