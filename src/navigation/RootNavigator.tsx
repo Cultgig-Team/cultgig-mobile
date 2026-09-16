@@ -47,6 +47,7 @@ import { TimeDateScreen } from "../screens/CreateEvent/TimeDateScreen";
 import { EventLocationScreen } from "../screens/CreateEvent/EventLocationScreen";
 import { EventBudgetScreen } from "../screens/CreateEvent/EventBudgetScreen";
 import { PostEventScreen } from "../screens/CreateEvent/PostEventScreen";
+import { MessageScreen } from "@/screens/Chat/MessageScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -136,11 +137,11 @@ const SignUpRoute = () => {
   return (
     <SignUpScreen
       onContinueWithMobile={() => {
-        // TODO: wire real mobile OTP flow once Appwrite phone auth is set up
+        // TODO: wire real mobile OTP flow once the auth backend is ready
         navigation.navigate("OTPVerification", { email: "your mobile number" });
       }}
       onContinueWithGoogle={() => {
-        // TODO: wire real Google OAuth via Appwrite once configured
+        // TODO: wire real Google OAuth once the auth provider is configured
       }}
       onSignUpWithEmail={(email) =>
         navigation.navigate("OTPVerification", { email })
@@ -161,8 +162,8 @@ const OTPRoute = () => {
         // TODO: wire real resend-code API call
       }}
       onVerify={(code) => {
-        // TODO: actually verify `code` against the backend (Appwrite)
-        // before navigating anywhere — right now any 5 digits pass.
+        // TODO: verify `code` against the backend before navigating anywhere.
+        // Right now any 5 digits pass.
         if (primaryIntent === "client") {
           navigation.navigate("PersonalBio");
           return;
@@ -259,7 +260,7 @@ const BusinessPhotosRoute = () => {
       onBack={() => navigation.goBack()}
       // Last step of the Client branch — hands off into the main app.
       // TODO: submit `answers` from useOnboardingStore to the real
-      // user profile (Appwrite) here before navigating, then reset().
+      // user profile backend here before navigating, then reset().
       // Mirrors the same TODO on InterestsRoute for the Artist branch.
       onContinue={() => navigation.navigate("MainTabs")}
       onSkip={() => navigation.navigate("MainTabs")}
@@ -367,7 +368,7 @@ const InterestsRoute = () => {
       onBack={() => navigation.goBack()}
       // Last step of the Artist branch — hands off into the main app.
       // TODO: submit `answers` from useOnboardingStore to the real
-      // user profile (Appwrite) here before navigating, then reset().
+      // user profile backend here before navigating, then reset().
       onContinue={() => navigation.navigate("MainTabs")}
       onSkip={() => navigation.navigate("MainTabs")}
     />
@@ -610,6 +611,11 @@ export const RootNavigator = () => {
         <Stack.Screen name="NegotiatePrice" component={NegotiatePriceRoute} />
         <Stack.Screen name="Proposal" component={ProposalRoute} />
         <Stack.Screen name="SubmitProposal" component={SubmitProposalRoute} />
+        <Stack.Screen
+          name="ChatRoom"
+          component={MessageScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}
