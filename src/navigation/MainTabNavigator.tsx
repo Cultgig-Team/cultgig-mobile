@@ -6,11 +6,14 @@ import CalendarScreen from "@/screens/ScheduleEvent/CalendarSceen";
 import { SearchScreen } from "../screens/search/SearchScreen";
 import { theme } from "../theme";
 import { MainTabParamList } from "./types";
-import CultgigNavCalendarIcon from "../../assets/icons/cultgig-nav-calendar-icon.svg";
-import CultgigNavChatIcon from "../../assets/icons/cultgig-nav-chat-icon.svg";
-import CultgigNavHomeIcon from "../../assets/icons/cultgig-nav-home-icon.svg";
-import CultgigNavSearchIcon from "../../assets/icons/cultgig-nav-search-icon.svg";
-import CultgigNavUserIcon from "../../assets/icons/cultgig-nav-user-icon.svg";
+import CultgigNavCalendarIcon from "../../assets/icons/calendar.svg";
+import CultgigInactiveCalendarIcon from "../../assets/icons/calender-inactive.svg";
+import CultgigNavChatIcon from "../../assets/icons/message.svg";
+import CultgigActiveChatIcon from "../../assets/icons/message-active.svg";
+import CultgigNavHomeIcon from "../../assets/icons/home.svg";
+import CultgigNavSearchIcon from "../../assets/icons/search.svg";
+import CultgigNavUserIcon from "../../assets/icons/profile.svg";
+import CultgigActiveSearchIcon from "../../assets/icons/search-active.svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SVG } from "@/components/common/SVG";
 import { ProfileScreen } from "@/screens/Profile/ProfileScreen";
@@ -26,27 +29,41 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const TAB_ROUTES: Record<
   keyof MainTabParamList,
-  { component: React.ComponentType<any>; icon: React.FC<any>; label: string }
+  {
+    component: React.ComponentType<any>;
+    icon: React.FC<any>;
+    activeIcon: React.FC<any>;
+    label: string;
+  }
 > = {
-  Home: { component: HomeScreen, icon: CultgigNavHomeIcon, label: "Home" },
+  Home: {
+    component: HomeScreen,
+    icon: CultgigNavHomeIcon,
+    activeIcon: CultgigNavHomeIcon,
+    label: "Home",
+  },
   Search: {
     component: SearchScreen,
     icon: CultgigNavSearchIcon,
+    activeIcon: CultgigActiveSearchIcon,
     label: "Search",
   },
   Calendar: {
     component: CalendarScreen,
-    icon: CultgigNavCalendarIcon,
+    icon: CultgigInactiveCalendarIcon,
+    activeIcon: CultgigNavCalendarIcon,
     label: "Calendar",
   },
   Message: {
     component: ChatScreen,
     icon: CultgigNavChatIcon,
+    activeIcon: CultgigActiveChatIcon,
     label: "Message",
   },
   Profile: {
     component: ProfileScreen,
     icon: CultgigNavUserIcon,
+    activeIcon: CultgigNavUserIcon,
     label: "profile",
   },
 };
@@ -63,7 +80,6 @@ const TabIcons = ({ focused, Icon, size, color }: TabIconsInterface) => {
 };
 
 const ACTIVE_PURPLE = "#6B2D5C";
-const INACTIVE_GRAY = "#94A3B8";
 export const MainTabNavigator = () => {
   const inset = useSafeAreaInsets();
   return (
@@ -74,8 +90,7 @@ export const MainTabNavigator = () => {
         return {
           headerShown: false,
           tabBarActiveTintColor: ACTIVE_PURPLE,
-          tabBarInactiveTintColor: INACTIVE_GRAY,
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarStyle: {
             backgroundColor: theme.colors.surface,
             borderTopColor: theme.colors.border,
@@ -89,7 +104,7 @@ export const MainTabNavigator = () => {
                 focused={focused}
                 color={color}
                 size={size}
-                Icon={tab.icon}
+                Icon={focused ? tab.activeIcon : tab.icon}
               />
             ) : (
               <></>
