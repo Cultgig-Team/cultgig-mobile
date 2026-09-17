@@ -23,7 +23,6 @@ export const SVG: React.FC<SVGProps> = ({
         height={size}
         color={color}
         stroke={color}
-        fill={color}
         {...props}
       />
     </View>
