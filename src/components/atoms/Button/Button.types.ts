@@ -10,6 +10,10 @@ export interface ButtonProps extends Omit<PressableProps, "style"> {
   fullWidth?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  /** Optional icon element rendered beside the label */
+  icon?: React.ReactNode;
+  /** Where to place the icon relative to the label. Defaults to "left". */
+  iconPosition?: "left" | "right";
   labelStyle?: StyleProp<TextStyle>;
   /** Layout-only overrides (margin, etc). Never use this to change colors/radius — add a variant instead. */
   style?:

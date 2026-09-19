@@ -1,6 +1,7 @@
 import { apiClient } from "./apiClient";
 import { popularEvents } from "assets/dummyData/popular-events";
 import { artistProfiles } from "assets/dummyData/artist-profiles";
+import { myevents } from "assets/dummyData/my-event";
 
 export interface Artwork {
   id: string;
@@ -28,6 +29,22 @@ export interface PopularEvent {
   gallery: string[];
   createdAt: string;
   user: User;
+}
+
+export interface MyEvent {
+  id: number;
+  title: string;
+  location: string;
+  budget: number;
+  featureImage: string;
+  startsAt: string;
+  eventDescription: string;
+  thingsToKnow: {
+    location: string;
+    date: string;
+    time: string;
+    budget: string;
+  };
 }
 
 export interface User {
@@ -75,6 +92,14 @@ export const artworkService = {
     id: number,
   ): Promise<PopularEvent | undefined> => {
     return popularEvents.find((event) => event.id === id);
+  },
+
+  getMyEvents: async (): Promise<MyEvent[]> => {
+    return myevents;
+  },
+
+  getMyEventById: async (id: number): Promise<MyEvent | undefined> => {
+    return myevents.find((event) => event.id === id);
   },
 };
 

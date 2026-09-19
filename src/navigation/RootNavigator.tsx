@@ -37,6 +37,7 @@ import { useOnboardingStore } from "../store/onboardingStore";
 import { theme } from "../theme";
 import { RootStackParamList } from "./types";
 import { EventDetailScreen } from "../screens/EventDetail/EventDetailScreen";
+import { MyEventDetailsScreen } from "../screens/ScheduleEvent/MyEventDetailsScreen";
 import { UserDetailScreen } from "../screens/UserDetail/UserDetailScreen";
 import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
 import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
@@ -389,6 +390,19 @@ const EventDetailRoute = () => {
   );
 };
 
+const MyEventDetailsRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "MyEventDetails">>();
+  const eventId = route.params.eventId;
+
+  return (
+    <MyEventDetailsScreen
+      eventId={eventId}
+      onBack={() => navigation.goBack()}
+    />
+  );
+};
+
 const CreateEventRoute = () => {
   const navigation = useNavigation<NavProp>();
 
@@ -601,6 +615,7 @@ export const RootNavigator = () => {
           options={{ headerShown: true, title: "Artwork" }}
         />
         <Stack.Screen name="EventDetail" component={EventDetailRoute} />
+        <Stack.Screen name="MyEventDetails" component={MyEventDetailsRoute} />
         <Stack.Screen name="CreateEvent" component={CreateEventRoute} />
         <Stack.Screen name="TimeDate" component={TimeDateRoute} />
         <Stack.Screen name="EventLocation" component={EventLocationRoute} />

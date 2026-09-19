@@ -39,6 +39,21 @@ export const usePopularEventDetail = (id: number) => {
   });
 };
 
+export const useMyEvents = () => {
+  return useQuery({
+    queryKey: ["events", "my"],
+    queryFn: artworkService.getMyEvents,
+  });
+};
+
+export const useMyEventDetail = (id: number) => {
+  return useQuery({
+    queryKey: ["events", "my", id],
+    queryFn: () => artworkService.getMyEventById(id),
+    enabled: Boolean(id),
+  });
+};
+
 export const useArtistSearch = (params: {
   query: string;
   category: string;
