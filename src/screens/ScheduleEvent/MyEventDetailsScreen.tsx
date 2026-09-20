@@ -16,12 +16,12 @@ import {
   Clock3,
   Calendar,
   Share2,
+  ChevronRight,
 } from "lucide-react-native";
 import { Text } from "../../components/atoms/Text";
 import { theme } from "../../theme";
 import { RootStackParamList } from "../../navigation/types";
 import { useMyEventDetail } from "../../hooks/useArtworks";
-import { useMyEvents } from "../../hooks/useArtworks";
 import { MyEventCard } from "../../components/molecules/MyEventCard/MyEventCard";
 
 type MyEventDetailsRouteProp = RouteProp<RootStackParamList, "MyEventDetails">;
@@ -120,22 +120,45 @@ export const MyEventDetailsScreen: React.FC<MyEventDetailsScreenProps> = ({
           </View>
         </View>
 
-        {/* Status Badge */}
-        {/* <View style={styles.statusBadge}>
-          <Text variant="caption" style={styles.statusBadgeText}>
-            Upcoming Event
-          </Text>
-        </View> */}
+        <MyEventCard
+          key={event.id}
+          event={event}
+          rightIcon="edit"
+          gradientColors={["#FAF2F9", "#FFFFFF"]}
+          applicantsColor="primary"
+          onEdit={() =>
+            navigation.navigate("EditEvent", { eventId: event.id })
+          }
+        />
 
-        {/* Event Title */}
-        <Text variant="h2" style={styles.pageTitle}>
-          {event.title}
-        </Text>
+        {/* Event Applicants */}
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 20,
+          }}
+          onPress={() =>
+            navigation.navigate("EventApplicants", { eventId: event.id })
+          }
+          activeOpacity={0.7}
+        >
+          <View>
+            <Text variant="titleMd" style={styles.sectionTitle}>
+              Event Applicants
+            </Text>
+            <Text variant="body" style={styles.description}>
+              Check artists who have applied
+            </Text>
+          </View>
+          <ChevronRight />
+        </TouchableOpacity>
 
         <View style={styles.divider} />
 
         {/* About Event */}
-        <DetailSection title="About this Event">
+        <DetailSection title="Event Description">
           <Text variant="body" style={styles.description}>
             {event.eventDescription}
           </Text>
@@ -143,55 +166,38 @@ export const MyEventDetailsScreen: React.FC<MyEventDetailsScreenProps> = ({
 
         <View style={styles.divider} />
 
-        {/* At a glance */}
-        <DetailSection title="At a glance">
+        {/* Event Details */}
+        <DetailSection title="Event Details">
           <View style={styles.infoItemSimple}>
-            <Banknote size={24} color={theme.colors.primary} />
+            <Calendar size={20} color={theme.colors.textSecondary} />
             <View style={styles.infoItemText}>
-              <Text variant="titleMd">
-                {event.thingsToKnow?.budget ?? `₹${event.budget}`}
-              </Text>
-              <Text variant="caption" color="textSecondary">
-                Price fixed
+              <Text variant="body" style={styles.description}>
+                {event.thingsToKnow?.date ?? event.startsAt}
               </Text>
             </View>
           </View>
-
-          <View style={styles.infoItemsStack}>
-            <View style={styles.infoItemSimple}>
-              <MapPin size={24} color={theme.colors.backgroundDark} />
-              <View style={styles.infoItemText}>
-                <Text variant="titleMd">
-                  {event.thingsToKnow?.location ?? event.location}
-                </Text>
-                <Text variant="caption" color="textSecondary">
-                  Work in person from the location
-                </Text>
-              </View>
+          <View style={styles.infoItemSimple}>
+            <Clock3 size={20} color={theme.colors.textSecondary} />
+            <View style={styles.infoItemText}>
+              <Text variant="body" style={styles.description}>
+                {event.thingsToKnow?.time ?? event.startsAt}
+              </Text>
             </View>
-
-            <View style={styles.infoItemSimple}>
-              <Clock3 size={24} color={theme.colors.backgroundDark} />
-              <View style={styles.infoItemText}>
-                <Text variant="titleMd">
-                  {event.thingsToKnow?.time ?? event.startsAt}
-                </Text>
-                <Text variant="caption" color="textSecondary">
-                  Working hours
-                </Text>
-              </View>
+          </View>
+          <View style={styles.infoItemSimple}>
+            <MapPin size={20} color={theme.colors.textSecondary} />
+            <View style={styles.infoItemText}>
+              <Text variant="body" style={styles.description}>
+                {event.thingsToKnow?.location ?? event.location}
+              </Text>
             </View>
-
-            <View style={styles.infoItemSimple}>
-              <Calendar size={24} color={theme.colors.backgroundDark} />
-              <View style={styles.infoItemText}>
-                <Text variant="titleMd">
-                  {event.thingsToKnow?.date ?? event.startsAt}
-                </Text>
-                <Text variant="caption" color="textSecondary">
-                  Event dates
-                </Text>
-              </View>
+          </View>
+          <View style={styles.infoItemSimple}>
+            <Banknote size={20} color={theme.colors.textSecondary} />
+            <View style={styles.infoItemText}>
+              <Text variant="body" style={styles.description}>
+                {event.thingsToKnow?.budget ?? `₹${event.budget}`}
+              </Text>
             </View>
           </View>
         </DetailSection>
@@ -227,26 +233,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 16,
   },
-  statusBadge: {
-    alignSelf: "flex-start",
-    backgroundColor: "#FAF1F7",
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 100,
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  statusBadgeText: {
-    color: theme.colors.primary,
-    fontWeight: "700",
-    fontSize: 12,
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: theme.colors.textPrimary,
-    marginVertical: 8,
-  },
   divider: {
     height: 1,
     backgroundColor: "#E5E7EB",
@@ -258,6 +244,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginBottom: 12,
     fontWeight: "700",
+    fontSize: 18,
   },
   description: {
     lineHeight: 24,
@@ -267,14 +254,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 16,
-    paddingVertical: 10,
+    paddingVertical: 2,
   },
   infoItemText: {
     flex: 1,
-    gap: 2,
-  },
-  infoItemsStack: {
-    gap: 4,
-    marginTop: 8,
   },
 });

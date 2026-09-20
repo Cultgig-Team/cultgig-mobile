@@ -7,6 +7,8 @@ import {
   Modal,
   Dimensions,
   Alert,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import {
@@ -16,7 +18,9 @@ import {
   Pause,
   Play,
   Trash2,
+  SquarePen,
 } from "lucide-react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "../../atoms/Text";
 import { theme } from "../../../theme";
 import { MyEvent } from "@/services/artworkService";
@@ -28,6 +32,13 @@ export interface MyEventCardProps {
   onPause?: (event: MyEvent) => void;
   onContinue?: (event: MyEvent) => void;
   onDelete?: (event: MyEvent) => void;
+  onEdit?: (event: MyEvent) => void;
+  rightIcon?: "menu" | "edit";
+  backgroundColor?: string;
+  gradientColors?: readonly [string, string, ...string[]];
+  applicantsColor?: "primary" | "textSecondary" | "textPrimary";
+  variant?: "default" | "detail";
+  cardStyle?: StyleProp<ViewStyle>;
 }
 
 export const MyEventCard: React.FC<MyEventCardProps> = ({
@@ -36,17 +47,46 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
   onPause,
   onContinue,
   onDelete,
+  onEdit,
+  rightIcon,
+  backgroundColor,
+  gradientColors,
+  applicantsColor,
+  variant = "default",
+  cardStyle,
 }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const buttonRef = useRef<View>(null);
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, right: 16 });
 
+  const isDetail = variant === "detail";
+  const effectiveRightIcon = rightIcon ?? (isDetail ? "edit" : "menu");
+  const isGradientBg =
+    typeof backgroundColor === "string" && backgroundColor.includes("gradient");
+  const effectiveGradient: readonly [string, string, ...string[]] | undefined =
+    gradientColors ??
+    (isGradientBg
+      ? (["#FAF2F9", "#FFFFFF"] as const)
+      : undefined);
+  const effectiveBgColor = effectiveGradient
+    ? undefined
+    : (backgroundColor ?? (isDetail ? "#D9D9D9" : "#FFFFFF"));
+  const effectiveApplicantsColor =
+    applicantsColor ?? (isDetail ? "primary" : undefined);
+  const isDetailMode = isDetail || effectiveRightIcon === "edit";
+
   const handleCardPress = () => {
     if (onPress) {
       onPress();
-    } else {
+    } else if (!isDetail && effectiveRightIcon !== "edit") {
       navigation.navigate("MyEventDetails", { eventId: event.id });
+    }
+  };
+
+  const handleEditPress = () => {
+    if (onEdit) {
+      onEdit(event);
     }
   };
 
@@ -97,11 +137,25 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
   return (
     <>
       <Pressable
-        style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+        style={({ pressed }) => [
+          styles.card,
+          effectiveBgColor ? { backgroundColor: effectiveBgColor } : null,
+          cardStyle,
+          pressed && !isDetail && styles.cardPressed,
+        ]}
         onPress={handleCardPress}
         accessibilityRole="button"
       >
-        {/* Top bar: Badge + 3-dot Menu */}
+        {effectiveGradient && (
+          <LinearGradient
+            colors={effectiveGradient}
+            start={{ x: 0, y: 0.1 }}
+            end={{ x: 0.98, y: 0.4 }}
+            locations={[0.0237, 0.9868]}
+            style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}
+          />
+        )}
+        {/* Top bar: Badge + Action Icon */}
         <View style={styles.cardTopBar}>
           <View style={styles.statusBadge}>
             <Text variant="caption" style={styles.statusBadgeText}>
@@ -109,22 +163,40 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
             </Text>
           </View>
 
-          <TouchableOpacity
-            ref={buttonRef}
-            onPress={handleMenuPress}
-            style={styles.moreButton}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            accessibilityLabel="Event options"
-          >
-            <EllipsisVerticalIcon
-              size={24}
-              color={theme.colors.textSecondary}
-            />
-          </TouchableOpacity>
+          {effectiveRightIcon === "edit" ? (
+            <TouchableOpacity
+              onPress={handleEditPress}
+              style={styles.moreButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              accessibilityLabel="Edit event"
+            >
+              <SquarePen
+                size={24}
+                color={theme.colors.primary}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              ref={buttonRef}
+              onPress={handleMenuPress}
+              style={styles.moreButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              accessibilityLabel="Event options"
+            >
+              <EllipsisVerticalIcon
+                size={24}
+                color={theme.colors.textSecondary}
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Event Title */}
-        <Text variant="titleMd" style={styles.title} numberOfLines={2}>
+        <Text
+          variant="titleMd"
+          style={[styles.title, isDetailMode && styles.titleDetail]}
+          numberOfLines={2}
+        >
           {event.title}
         </Text>
 
@@ -154,7 +226,7 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
           </View>
         </View>
 
-        {/* Card Footer: View Details */}
+        {/* Card Footer */}
         <View style={styles.cardFooter}>
           <Text variant="titleLg" style={styles.footerActionText}>
             {event.budget}
@@ -162,7 +234,9 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
               /hr
             </Text>
           </Text>
-          <Text variant="bodySmall">{2} applicants</Text>
+          <Text variant="bodySmall" color={effectiveApplicantsColor}>
+            {2} applicants
+          </Text>
         </View>
       </Pressable>
 
@@ -248,6 +322,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 6,
     elevation: 2,
+    overflow: "hidden",
   },
   cardPressed: {
     opacity: 0.85,
@@ -280,6 +355,10 @@ const styles = StyleSheet.create({
     color: "#111827",
     lineHeight: 22,
     marginBottom: 12,
+  },
+  titleDetail: {
+    fontSize: 20,
+    lineHeight: 26,
   },
   infoStack: {
     gap: 8,
