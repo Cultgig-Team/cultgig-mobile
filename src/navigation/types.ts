@@ -62,6 +62,7 @@ export type RootStackParamList = {
   MyEventDetails: { eventId: number };
   EditEvent: { eventId: number };
   EventApplicants: { eventId: number };
+  ApplicantDetail: { applicantId: number };
   UserDetail: { user: User };
   ApplyonEvent: { eventId?: number } | undefined;
   NegotiatePrice: { budget: number };

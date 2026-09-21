@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -7,6 +7,11 @@ import { ChevronLeft } from "lucide-react-native";
 import { Text } from "../../components/atoms/Text";
 import { theme } from "../../theme";
 import { RootStackParamList } from "../../navigation/types";
+import { ApplicantCard } from "../../components/molecules/ApplicantCard";
+import {
+  eventApplicants,
+  EventApplicant,
+} from "../../../assets/dummyData/event-applicants";
 
 type EventApplicantsRouteProp = RouteProp<
   RootStackParamList,
@@ -35,6 +40,14 @@ export const EventApplicantsScreen: React.FC<EventApplicantsScreenProps> = ({
     }
   };
 
+  const renderItem = ({ item }: { item: EventApplicant }) => (
+    <ApplicantCard
+      applicant={item}
+      onDecline={() => console.log("Decline", item.id)}
+      onView={() => navigation.navigate("ApplicantDetail", { applicantId: item.id })}
+    />
+  );
+
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       {/* Header */}
@@ -55,15 +68,13 @@ export const EventApplicantsScreen: React.FC<EventApplicantsScreenProps> = ({
         <View style={{ width: 32 }} />
       </View>
 
-      {/* Placeholder Content */}
-      <View style={styles.centered}>
-        <Text variant="h2" style={styles.title}>
-          Event Applicants
-        </Text>
-        <Text variant="body" color="textSecondary" style={styles.subtitle}>
-          Applicants for Event ID: {eventId}
-        </Text>
-      </View>
+      <FlatList
+        data={eventApplicants}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={renderItem}
+        contentContainerStyle={styles.list}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+      />
     </SafeAreaView>
   );
 };
@@ -87,16 +98,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontWeight: "700",
   },
-  centered: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  list: {
     paddingHorizontal: 20,
+    paddingVertical: 24,
   },
-  title: {
-    marginBottom: 8,
-  },
-  subtitle: {
-    textAlign: "center",
+  separator: {
+    height: 16,
   },
 });

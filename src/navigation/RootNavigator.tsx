@@ -40,6 +40,7 @@ import { EventDetailScreen } from "../screens/EventDetail/EventDetailScreen";
 import { MyEventDetailsScreen } from "../screens/ScheduleEvent/MyEventDetailsScreen";
 import { EditEventScreen } from "../screens/ScheduleEvent/EditEventScreen";
 import { EventApplicantsScreen } from "../screens/ScheduleEvent/EventApplicantsScreen";
+import { ApplicantDetailScreen } from "../screens/ScheduleEvent/ApplicantDetailScreen";
 import { UserDetailScreen } from "../screens/UserDetail/UserDetailScreen";
 import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
 import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
@@ -431,6 +432,10 @@ const EventApplicantsRoute = () => {
   );
 };
 
+const ApplicantDetailRoute = () => {
+  return <ApplicantDetailScreen />;
+};
+
 const CreateEventRoute = () => {
   const navigation = useNavigation<NavProp>();
 
@@ -648,6 +653,10 @@ export const RootNavigator = () => {
         <Stack.Screen
           name="EventApplicants"
           component={EventApplicantsRoute}
+        />
+        <Stack.Screen
+          name="ApplicantDetail"
+          component={ApplicantDetailRoute}
         />
         <Stack.Screen name="CreateEvent" component={CreateEventRoute} />
         <Stack.Screen name="TimeDate" component={TimeDateRoute} />
