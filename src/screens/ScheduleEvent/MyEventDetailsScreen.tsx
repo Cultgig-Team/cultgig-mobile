@@ -107,6 +107,9 @@ export const MyEventDetailsScreen: React.FC<MyEventDetailsScreenProps> = ({
               color={theme.colors.textPrimary}
             />
           </TouchableOpacity>
+          <Text variant="titleMd" style={styles.headerTitle}>
+            Event Details
+          </Text>
           <View style={styles.headerActions}>
             <TouchableOpacity
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -126,9 +129,7 @@ export const MyEventDetailsScreen: React.FC<MyEventDetailsScreenProps> = ({
           rightIcon="edit"
           gradientColors={["#FAF2F9", "#FFFFFF"]}
           applicantsColor="primary"
-          onEdit={() =>
-            navigation.navigate("EditEvent", { eventId: event.id })
-          }
+          onEdit={() => navigation.navigate("EditEvent", { eventId: event.id })}
         />
 
         {/* Event Applicants */}
@@ -258,5 +259,8 @@ const styles = StyleSheet.create({
   },
   infoItemText: {
     flex: 1,
+  },
+  headerTitle: {
+    fontWeight: "700",
   },
 });

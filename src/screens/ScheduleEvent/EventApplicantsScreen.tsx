@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ChevronLeft } from "lucide-react-native";
+import { ChevronLeft, X } from "lucide-react-native";
 import { Text } from "../../components/atoms/Text";
 import { theme } from "../../theme";
 import { RootStackParamList } from "../../navigation/types";
@@ -44,7 +44,9 @@ export const EventApplicantsScreen: React.FC<EventApplicantsScreenProps> = ({
     <ApplicantCard
       applicant={item}
       onDecline={() => console.log("Decline", item.id)}
-      onView={() => navigation.navigate("ApplicantDetail", { applicantId: item.id })}
+      onView={() =>
+        navigation.navigate("ApplicantDetail", { applicantId: item.id })
+      }
     />
   );
 
@@ -65,7 +67,12 @@ export const EventApplicantsScreen: React.FC<EventApplicantsScreenProps> = ({
         <Text variant="titleMd" style={styles.headerTitle}>
           Event Applicants
         </Text>
-        <View style={{ width: 32 }} />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <X size={24} />
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -92,8 +99,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
   },
   headerTitle: {
     fontWeight: "700",
