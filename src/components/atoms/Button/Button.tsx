@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, ActivityIndicator, StyleSheet } from "react-native";
+import { Pressable, ActivityIndicator, StyleSheet, View } from "react-native";
 import { Text } from "../Text/Text";
 import { theme } from "../../../theme";
 import { buttonStyles, sizeStyles } from "./Button.styles";
@@ -19,6 +19,8 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   loading = false,
   disabled = false,
+  icon,
+  iconPosition = "left",
   labelStyle,
   style, // pulled out so it merges into the array below instead of
   // overwriting it when spread via ...pressableProps
@@ -60,6 +62,13 @@ export const Button: React.FC<ButtonProps> = ({
               : theme.colors.primary
           }
         />
+      ) : icon ? (
+        <View style={[styles.iconRow, iconPosition === "right" && styles.iconRowReverse]}>
+          {icon}
+          <Text variant="button" style={[textColorStyle, labelStyle]}>
+            {label}
+          </Text>
+        </View>
       ) : (
         <Text variant="button" style={[textColorStyle, labelStyle]}>
           {label}
@@ -72,5 +81,13 @@ export const Button: React.FC<ButtonProps> = ({
 const styles = StyleSheet.create({
   pressed: {
     opacity: 0.8,
+  },
+  iconRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  iconRowReverse: {
+    flexDirection: "row-reverse",
   },
 });
