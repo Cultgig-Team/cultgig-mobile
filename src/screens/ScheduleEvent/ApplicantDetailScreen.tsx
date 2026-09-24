@@ -9,14 +9,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import {
-  Banknote,
-  ChevronLeft,
-  Cross,
-  CrossIcon,
-  MessageCircle,
-  X,
-} from "lucide-react-native";
+import { Banknote, ChevronLeft, MessageCircle, X } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "../../components/atoms/Text";
 import { Button } from "../../components/atoms/Button";
@@ -62,8 +55,10 @@ export const ApplicantDetailScreen: React.FC = () => {
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <X size={24} />
+          <X size={24} strokeWidth={1.5} color={theme.colors.textPrimary} />
         </TouchableOpacity>
+
+        <View style={{ width: 32 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
@@ -158,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    paddingHorizontal: 20,
+
     paddingVertical: 12,
   },
   content: {
