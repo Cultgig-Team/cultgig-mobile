@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Image,
   ActivityIndicator,
 } from "react-native";
 import { Text } from "../../components/atoms/Text";
@@ -78,15 +79,25 @@ const CalendarSceen = () => {
             </View>
           ) : (
             <View style={styles.emptyState}>
-              <Text variant="body" color="textSecondary">
-                No upcoming events
+              <Image
+                width={224}
+                height={224}
+                source={require("../../../assets/images/chat-message.png")}
+              />
+              <Text variant="h3" color="textSecondary">
+                No Events found
               </Text>
             </View>
           )
         ) : (
           <View style={styles.emptyState}>
-            <Text variant="body" color="textSecondary">
-              No previous events
+            <Image
+              width={224}
+              height={224}
+              source={require("../../../assets/images/chat-message.png")}
+            />
+            <Text variant="h3" color="textSecondary">
+              No Events found
             </Text>
           </View>
         )}

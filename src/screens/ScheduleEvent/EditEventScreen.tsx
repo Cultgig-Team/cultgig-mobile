@@ -184,7 +184,7 @@ export const EditEventScreen: React.FC<EditEventScreenProps> = ({
 
         <View style={styles.formSection}>
           <Text variant="titleLg" style={styles.descriptionLabel}>
-            Describe what need doing
+            Event Description
           </Text>
           <View style={styles.descriptionInputWrapper}>
             <Input

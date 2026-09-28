@@ -27,9 +27,8 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
             {applicant.bio}
           </Text>
           <Text>
-            <IndianRupee size={16} />
             <Text variant="titleMd">
-              {applicant.budget}
+              ₹{applicant.budget}
               <Text>/hr</Text>
             </Text>
           </Text>

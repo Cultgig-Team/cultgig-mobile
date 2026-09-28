@@ -19,6 +19,7 @@ import {
   Play,
   Trash2,
   SquarePen,
+  IndianRupee,
 } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "../../atoms/Text";
@@ -66,9 +67,7 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
     typeof backgroundColor === "string" && backgroundColor.includes("gradient");
   const effectiveGradient: readonly [string, string, ...string[]] | undefined =
     gradientColors ??
-    (isGradientBg
-      ? (["#FAF2F9", "#FFFFFF"] as const)
-      : undefined);
+    (isGradientBg ? (["#FAF2F9", "#FFFFFF"] as const) : undefined);
   const effectiveBgColor = effectiveGradient
     ? undefined
     : (backgroundColor ?? (isDetail ? "#D9D9D9" : "#FFFFFF"));
@@ -105,7 +104,10 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
     if (onPause) {
       onPause(event);
     } else {
-      Alert.alert("Event Paused", `Applications for "${event.title}" have been paused.`);
+      Alert.alert(
+        "Event Paused",
+        `Applications for "${event.title}" have been paused.`,
+      );
     }
   };
 
@@ -114,7 +116,10 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
     if (onContinue) {
       onContinue(event);
     } else {
-      Alert.alert("Event Continued", `"${event.title}" is now active and continuing.`);
+      Alert.alert(
+        "Event Continued",
+        `"${event.title}" is now active and continuing.`,
+      );
     }
   };
 
@@ -129,7 +134,7 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
         [
           { text: "Cancel", style: "cancel" },
           { text: "Delete", style: "destructive", onPress: () => {} },
-        ]
+        ],
       );
     }
   };
@@ -170,10 +175,7 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               accessibilityLabel="Edit event"
             >
-              <SquarePen
-                size={24}
-                color={theme.colors.primary}
-              />
+              <SquarePen size={24} color={theme.colors.primary} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
@@ -229,7 +231,7 @@ export const MyEventCard: React.FC<MyEventCardProps> = ({
         {/* Card Footer */}
         <View style={styles.cardFooter}>
           <Text variant="titleLg" style={styles.footerActionText}>
-            {event.budget}
+            ₹{event.budget}
             <Text variant="body" color="textSecondary">
               /hr
             </Text>
