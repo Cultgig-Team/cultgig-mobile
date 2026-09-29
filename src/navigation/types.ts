@@ -59,6 +59,10 @@ export type RootStackParamList = {
   };
   ArtworkDetail: { artworkId: string };
   EventDetail: { eventId: number };
+  MyEventDetails: { eventId: number };
+  EditEvent: { eventId: number };
+  EventApplicants: { eventId: number };
+  ApplicantDetail: { applicantId: number };
   UserDetail: { user: User };
   ApplyonEvent: { eventId?: number } | undefined;
   NegotiatePrice: { budget: number };

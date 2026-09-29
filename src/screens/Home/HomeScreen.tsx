@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import {
+  ArrowRight,
   Bell,
   FileText,
   FileCheck,
@@ -124,9 +125,9 @@ export const HomeScreen = () => {
               Cultgig
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Image source={{ uri: AVATAR_URL }} style={styles.avatar} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* search & post event card */}
@@ -165,8 +166,16 @@ export const HomeScreen = () => {
                 scrolling required.
               </Text>
               <Button
-                label="Post a Event →"
+                label="Post an Event"
                 variant="secondary"
+                icon={
+                  <ArrowRight
+                    size={22}
+                    strokeWidth={2}
+                    color={theme.colors.primary}
+                  />
+                }
+                iconPosition="right"
                 style={styles.postEventButton}
                 labelStyle={styles.postEventLabel}
                 onPress={() => navigation.navigate("CreateEvent")}
@@ -276,7 +285,7 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   clientHero: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: "#4B1E46",
     color: theme.colors.background,
     gap: 12,
     borderColor: theme.colors.border,
@@ -305,12 +314,13 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   postEventButton: {
-    width: 135,
+    width: 143,
     height: 44,
     borderRadius: 12,
   },
   postEventLabel: {
     fontSize: 14,
+    lineHeight: 14,
     color: theme.colors.primary,
   },
   grid: {

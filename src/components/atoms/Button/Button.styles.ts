@@ -55,8 +55,8 @@ export const buttonStyles = StyleSheet.create({
   },
 });
 
-export const sizeStyles: Record<ButtonSize, { paddingVertical: number; paddingHorizontal: number }> = {
+export const sizeStyles: Record<ButtonSize, { paddingVertical: number; paddingHorizontal: number; minHeight?: number }> = {
   sm: { paddingVertical: theme.spacing.xs, paddingHorizontal: theme.spacing.md },
-  md: { paddingVertical: theme.spacing.sm, paddingHorizontal: theme.spacing.lg },
+  md: { paddingVertical: theme.spacing.sm, paddingHorizontal: theme.spacing.lg, minHeight: 52 },
   lg: { paddingVertical: theme.spacing.md, paddingHorizontal: theme.spacing.xl },
 };

@@ -37,6 +37,10 @@ import { useOnboardingStore } from "../store/onboardingStore";
 import { theme } from "../theme";
 import { RootStackParamList } from "./types";
 import { EventDetailScreen } from "../screens/EventDetail/EventDetailScreen";
+import { MyEventDetailsScreen } from "../screens/ScheduleEvent/MyEventDetailsScreen";
+import { EditEventScreen } from "../screens/ScheduleEvent/EditEventScreen";
+import { EventApplicantsScreen } from "../screens/ScheduleEvent/EventApplicantsScreen";
+import { ApplicantDetailScreen } from "../screens/ScheduleEvent/ApplicantDetailScreen";
 import { UserDetailScreen } from "../screens/UserDetail/UserDetailScreen";
 import { ApplyOnEvent } from "../screens/OnboardingOfApplyEvent/ApplyonEvent";
 import { NegotiatePriceScreen } from "../screens/OnboardingOfApplyEvent/NegotiatePriceScreen";
@@ -389,6 +393,49 @@ const EventDetailRoute = () => {
   );
 };
 
+const MyEventDetailsRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "MyEventDetails">>();
+  const eventId = route.params.eventId;
+
+  return (
+    <MyEventDetailsScreen
+      eventId={eventId}
+      onBack={() => navigation.goBack()}
+    />
+  );
+};
+
+const EditEventRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "EditEvent">>();
+  const eventId = route.params.eventId;
+
+  return (
+    <EditEventScreen
+      eventId={eventId}
+      onBack={() => navigation.goBack()}
+    />
+  );
+};
+
+const EventApplicantsRoute = () => {
+  const navigation = useNavigation<NavProp>();
+  const route = useRoute<RouteProp<RootStackParamList, "EventApplicants">>();
+  const eventId = route.params.eventId;
+
+  return (
+    <EventApplicantsScreen
+      eventId={eventId}
+      onBack={() => navigation.goBack()}
+    />
+  );
+};
+
+const ApplicantDetailRoute = () => {
+  return <ApplicantDetailScreen />;
+};
+
 const CreateEventRoute = () => {
   const navigation = useNavigation<NavProp>();
 
@@ -601,6 +648,16 @@ export const RootNavigator = () => {
           options={{ headerShown: true, title: "Artwork" }}
         />
         <Stack.Screen name="EventDetail" component={EventDetailRoute} />
+        <Stack.Screen name="MyEventDetails" component={MyEventDetailsRoute} />
+        <Stack.Screen name="EditEvent" component={EditEventRoute} />
+        <Stack.Screen
+          name="EventApplicants"
+          component={EventApplicantsRoute}
+        />
+        <Stack.Screen
+          name="ApplicantDetail"
+          component={ApplicantDetailRoute}
+        />
         <Stack.Screen name="CreateEvent" component={CreateEventRoute} />
         <Stack.Screen name="TimeDate" component={TimeDateRoute} />
         <Stack.Screen name="EventLocation" component={EventLocationRoute} />

@@ -1,51 +1,45 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import {
-  ArrowRight,
-  BadgeCheck,
-  Check,
-  MessageSquare,
-  NotepadText,
-} from "lucide-react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { Text } from "../../atoms/Text";
-import { theme } from "../../../theme";
 
 const STEPS = [
   {
-    icon: ArrowRight,
+    imageSource: require("../../../../assets/images/Mail-bro.png"),
     title: "Post what you need",
-    description: "Event date, budget and a short brief",
+    description:
+      "Post what you need what you’re looking for. Let the right talent find you.",
   },
   {
-    icon: MessageSquare,
+    imageSource: require("../../../../assets/images/Instant-information-cuate.png"),
     title: "Compare & message",
-    description: "Artists apply or you request directly",
+    description:
+      "Compare artists side-by-side &message the right one directly.",
   },
   {
-    icon: BadgeCheck,
+    imageSource: require("../../../../assets/images/Verified-amico.png"),
     title: "Every artist is phone-verified",
-    description: "Reviews come only from real",
+    description: "Real artists. Real identities. More trust behind every gig.",
   },
   {
-    icon: Check,
+    imageSource: require("../../../../assets/images/Self confidence-rafiki.png"),
     title: "Book with confidence",
-    description: "Event date, budget and a short brief",
+    description:
+      "Find the right talent, verify their work, and chat with complete peace of mind",
   },
 ];
 
 export const HowCultgigWorks = () => (
   <View>
-    <Text variant="h2" style={{ paddingTop: 20, paddingBottom: 12 }}>
+    <Text variant="h2" style={{ paddingTop: 31, paddingBottom: 16 }}>
       How Cultgig works
     </Text>
-    <View style={styles.card}>
-      {STEPS.map(({ icon: Icon, title, description }) => (
-        <View key={title} style={styles.step}>
-          <View style={styles.iconWrapper}>
-            <Icon color={theme.colors.primary} />
+    <View style={{ gap: 12 }}>
+      {STEPS.map(({ imageSource: imageSource, title, description }) => (
+        <View key={title} style={styles.item}>
+          <View>
+            <Image source={imageSource} style={styles.image} />
           </View>
-          <View style={styles.stepContent}>
-            <Text variant="titleMd">{title}</Text>
+          <View style={{ width: 249, gap: 4 }}>
+            <Text variant="titleLg">{title}</Text>
             <Text color="textSecondary">{description}</Text>
           </View>
         </View>
@@ -55,28 +49,14 @@ export const HowCultgigWorks = () => (
 );
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#FCF7FB",
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: 16,
-  },
-  step: {
+  item: {
     flexDirection: "row",
-    justifyContent: "center",
+    gap: 12,
     alignItems: "center",
-    gap: 16,
-    borderBottomWidth: 1,
-    borderColor: theme.colors.border,
-    marginHorizontal: 16,
-    paddingVertical: 20,
   },
-  iconWrapper: {
-    padding: 12,
-    backgroundColor: "#E8BFDF80",
-    borderRadius: 12,
-  },
-  stepContent: {
-    flex: 1,
+  image: {
+    width: 92,
+    height: 92,
+    resizeMode: "contain",
   },
 });
